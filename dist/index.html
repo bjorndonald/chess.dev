@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <link href="./output.css" rel="stylesheet" />
+
+  <style type="text/tailwindcss"></style>
+</head>
+
+<body class="m-0 p-0 flex items-center justify-center bg-transparent">
+  <div id="chess" class="w-[384px] h-[405px] lg:w-[512px] lg:h-[540px] rounded-lg bg-board vstack items-end">
+    <div class="hstack justify-center w-full gap-3">
+      <div id="numbers" class="grid lg:ml-3 ml-[9px] grid-rows-[repeat(8,_45px)] lg:grid-rows-[repeat(8,_60px)] gap-0">
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          1
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          2
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          3
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          4
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          5
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          6
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          7
+        </div>
+        <div class="lg:w-6 lg:text-base text-sm w-[18px] center dark:text-white">
+          8
+        </div>
+      </div>
+
+      <div id="board"
+        class="grid grid-rows-[repeat(8,_45px)] lg:grid-rows-[repeat(8,_60px)] [&_.grid]:odd:bg-dark [&_.grid]:even:bg-light gap-0">
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+        <div class="grid row shrink-0 grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] w-full">
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+          <div class="h-[45px] lg:h-[60px] shrink-0 square relative center"></div>
+        </div>
+      </div>
+    </div>
+    <div id="letters" class="my-[9px] lg:my-3 grid grid-cols-[repeat(8,_42px)] lg:grid-cols-[repeat(8,_56px)] gap-0">
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        A
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        B
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        C
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        D
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        E
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        F
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        G
+      </div>
+      <div class="h-[18px] lg:text-base text-sm lg:h-6 center dark:text-white">
+        H
+      </div>
+    </div>
+  </div>
+  <script src="./index.js"></script>
+</body>
+
+</html>

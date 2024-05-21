@@ -1,0 +1,25 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "💻 Running pre-commit hook..."
+
+yarn format:fix || 
+(
+    echo "🚨 Format failed.";
+    false;
+)
+
+yarn lint:fix || 
+(
+    echo "🚨 Lint failed.";
+    false;
+)
+
+yarn types:check || 
+(
+    echo "🚨 Type check failed.";
+    false;
+)
+
+echo "✅ All checks passed 
+        Committing"
