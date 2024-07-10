@@ -12,15 +12,18 @@ const Moves = ({ moves }: Props) => {
         {moves
           .filter((x, i) => i % 2 === 0)
           .map((x, i) => (
-            <div key={i} className="hstack h-8 w-full border-b border-[#ccc]">
-              <div className="center h-full flex-[0.13] border-r border-[#404040] bg-[#302e2c] text-sm text-[#fff]">
+            <div
+              key={i}
+              className="grid h-8 w-full grid-cols-10 border-b border-[#ccc]"
+            >
+              <div className="col-span-2 h-full border-r border-[#404040] bg-[#302e2c] text-sm text-[#fff]">
                 {i + 1}
               </div>
-              <div className="hstack h-full flex-[0.435] border-[#404040] pl-2 text-sm text-[#f6f6f6]">
+              <div className="col-span-4 h-full border-[#404040] pl-2 text-sm text-[#f6f6f6]">
                 {x}
               </div>
               {!!moves[i * 2 + 1] && (
-                <div className="hstack h-full flex-[0.435] border-r border-[#404040] pl-2 text-sm text-[#bababa]">
+                <div className="hstack col-span-4 h-full border-r border-[#404040] pl-2 text-sm text-[#f6f6f6]">
                   {moves[i * 2 + 1]}
                 </div>
               )}

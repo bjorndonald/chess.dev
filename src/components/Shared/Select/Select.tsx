@@ -77,6 +77,7 @@ const Select = ({ onChange, list, placeholder }: ISelectProps) => {
 
       <motion.ul
         variants={listVariants}
+        initial="close"
         animate={showList ? "open" : "close"}
         className="absolute top-[104%] flex w-full flex-col rounded-lg border border-white  bg-black py-2"
       >

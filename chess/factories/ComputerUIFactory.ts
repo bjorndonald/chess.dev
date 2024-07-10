@@ -3,6 +3,8 @@ import UIFactory from "./UIFactory";
 import { addClass, fade, removeClass, unfade } from "../misc/func";
 import { CHESS_GAME_USER_PICK } from "../misc/strings";
 import minimax from "../misc/minmax";
+import { Piece } from "../types/square";
+import graphics from "../graphics";
 
 class ComputerUIFactory extends UIFactory {
     userPick: Color
@@ -81,6 +83,19 @@ class ComputerUIFactory extends UIFactory {
         }
     }
 
+    override createPieceDOM = (piece: Piece, parentElem: Element | null, shown: boolean) => {
+        const div = document.createElement("div");
+        div.id = piece.square
+        
+        div.className = this.userPick === "w" ? "piece rotate-180" : "piece"
+        if (!shown)
+            div.style.display = "none";
+        div.addEventListener("click", this.onClickPiece)
+        div.innerHTML = graphics[piece.type][piece.color]
+        parentElem?.appendChild(div);
+        return div
+    }
+ 
     override changeTurn = async () => {
         const move = this.service.computerMove(this.userPick) as Move
         const piece = document.getElementById(move.from)

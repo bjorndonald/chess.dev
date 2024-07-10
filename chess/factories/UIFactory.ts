@@ -20,10 +20,46 @@ class UIFactory {
         this.setupBoard()
     }
 
+    rewind = async () => {
+        var i = 0
+        const board = document.getElementById("board")
+        await fade(board)
+        while(i < this.service.history().length){
+            await this.effectUndo()
+        }
+        await unfade(board!)
+    }
+
+    effectUndo = async () => {
+        const move = this.service.undoMove()
+        console.log(move)
+        if (!move) return
+        const piece = document.getElementById(move.from)
+        
+        if (!piece) return;
+        console.log(piece)
+        piece.remove()
+        const hIndex = move.to[0].charCodeAt(0) - 96
+        const vIndex = parseInt(move.to[1])
+        const box = document.querySelector(`.row:nth-child(${vIndex}) .square:nth-child(${hIndex})`);
+        const newDom = this.createPieceDOM({
+            color: move.color,
+            square: move.to,
+            type: move.piece
+        }, box, false)
+        await unfade(newDom)
+    }
+
     undo = async () => {
         const board = document.getElementById("board")
         await fade(board)
-        const move = this.service.undoMove()
+        this.effectUndo()
+        await unfade(board!)
+    }
+
+    effectRedo = async () => {
+        const move = this.service.redo()
+        if (!move) return
         const piece = document.getElementById(move.from)
         if (!piece) return;
         piece.remove()
@@ -40,7 +76,22 @@ class UIFactory {
         }, box, false)
 
         await unfade(newDom)
+    }
 
+    redo = async () => {
+        const board = document.getElementById("board")
+        await fade(board)
+        await this.effectRedo()
+        await unfade(board!)
+    }
+
+    fastFoward = async () => {
+        const board = document.getElementById("board")
+        await fade(board)
+        var i = 0
+        while (i < this.service.moveHistory.length) {
+            await this.effectRedo()
+        }
         await unfade(board!)
     }
 
@@ -102,6 +153,7 @@ class UIFactory {
         const div = document.createElement("div");
         div.id = piece.square
         const turn = this.service.getTurn()
+        
         div.className = piece.color === "w" ? "piece rotate-180" : "piece"
         if (!shown)
             div.style.display = "none";
@@ -113,7 +165,8 @@ class UIFactory {
 
     movePiece = async (ev?: Event) => {
         if (!this.service.isGameOn()) return
-        if (this.currentSquare === null) return;
+        if (!this.currentSquare) return;
+       
         ev?.stopPropagation()
         const elem = ev.target as Element
         const hIndex = getChildElementIndex(elem.parentNode as Element)
@@ -123,8 +176,11 @@ class UIFactory {
 
         const square = x + (vIndex + 1) as Square
         if (square === this.currentSquare) return
-
         const move = this.service.movePiece({ from: this.currentSquare, to: square })
+       const to = document.getElementById(square)
+        if(!!to){
+            to.remove()
+        }
         const currentdom = document.getElementById(this.currentSquare)
         if (!currentdom) return;
         currentdom.remove()
@@ -176,16 +232,13 @@ class UIFactory {
             const x = move[move.length - 2].charCodeAt(0);
             const box = document.querySelector(`.row:nth-child(${move[move.length - 1]}) .square:nth-child(${x - 96})`);
             const piece = this.service.getPieceBySquare(move as Square)
-            if (!!piece) {
-                if (piece.color === colorOfPiece) {
-                    const invalid = document.createElement("div");
-                    invalid.className = "invalid"
-                    box?.appendChild(invalid)
-                } else {
+            console.log(piece, move)
+            if (move.includes("x")) {
+                
                     const danger = document.createElement("div");
                     danger.className = "danger"
                     box?.appendChild(danger)
-                }
+                
             } else {
                 const circle = document.createElement("div");
                 circle.className = "circle"

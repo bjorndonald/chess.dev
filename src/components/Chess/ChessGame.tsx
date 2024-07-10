@@ -10,26 +10,35 @@ import { Chess } from "chess.js";
 import Moves from "./Moves";
 import GameType from "@/types/gametype";
 import Countdown from "./Countdown";
+import {
+  CHESS_GAME_FEN_STATE,
+  CHESS_GAME_ID,
+  CHESS_GAME_TYPE,
+  CHESS_GAME_USER_PICK,
+} from "@/constants/strings";
 
 const YOU = { value: "You" };
 const COMPUTER = { value: "Computer" };
-// const PERSON = { value: "Enter Email", input: true };
+const PERSON = { value: "Enter Email", input: true };
 
-const playerList = [
-  YOU,
-  COMPUTER,
-  // PERSON
-];
+const playerList = [YOU, COMPUTER];
 
 const ChessGame = () => {
   const [showMoves, setShowMoves] = useState(false);
-  const [fenString, setFenString] = useState("");
+  const [fenString, setFenString] = useState(new Chess().fen());
   const [gameStart, setGameStart] = useState(false);
+  const [moves, setMoves] = useState<string[]>([]);
   const [showCountdown, setShowCountdown] = useState(false);
   const [whitePlayer, setWhitePlayer] = useState("");
   const [blackPlayer, setBlackPlayer] = useState("");
 
   const startGame = () => {
+    const bool =
+      (whitePlayer === COMPUTER.value && blackPlayer === YOU.value) ||
+      (whitePlayer === YOU.value && blackPlayer === COMPUTER.value) ||
+      (whitePlayer === PERSON.value && blackPlayer === YOU.value) ||
+      (whitePlayer === YOU.value && blackPlayer === PERSON.value);
+    if (!bool) return;
     const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
     iframe.contentWindow?.postMessage(
       {
@@ -44,6 +53,19 @@ const ChessGame = () => {
       },
       "*",
     );
+    localStorage.setItem(CHESS_GAME_ID, "empty");
+    localStorage.setItem(
+      CHESS_GAME_USER_PICK,
+      whitePlayer === YOU.value ? "w" : "b",
+    );
+    localStorage.setItem(CHESS_GAME_FEN_STATE, new Chess().fen());
+    localStorage.setItem(
+      CHESS_GAME_TYPE,
+      whitePlayer === COMPUTER.value || blackPlayer === COMPUTER.value
+        ? GameType.Computer
+        : GameType.Remote,
+    );
+    setFenString(new Chess().fen());
     setShowCountdown(true);
     setGameStart(true);
   };
@@ -56,9 +78,18 @@ const ChessGame = () => {
       },
       "*",
     );
+
+    localStorage.removeItem(CHESS_GAME_USER_PICK);
+    localStorage.removeItem(CHESS_GAME_ID);
+    localStorage.removeItem(CHESS_GAME_TYPE);
+    localStorage.removeItem(CHESS_GAME_FEN_STATE);
+    setFenString(new Chess().fen());
+    setMoves([]);
+    setGameStart(false);
   };
 
   useEffect(() => {
+    fenString;
     window.addEventListener("message", handleEvent, false);
 
     return () => {
@@ -66,14 +97,58 @@ const ChessGame = () => {
     };
   }, []);
 
-  const handleEvent = (e: MessageEvent<{ fenString: string }>) => {
+  const handleEvent = (
+    e: MessageEvent<{ fenString: string; moves: string[] }>,
+  ) => {
     if (
       !process.env.NEXTAUTH_URL?.includes(e.origin) &&
       e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
     ) {
       return;
     }
+    setMoves(e.data.moves);
     setFenString(e.data.fenString);
+    localStorage.setItem(CHESS_GAME_FEN_STATE, e.data.fenString);
+  };
+
+  const undoMove = () => {
+    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+      {
+        action: "undo",
+      },
+      "*",
+    );
+  };
+
+  const rewindGame = () => {
+    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+      {
+        action: "rewind",
+      },
+      "*",
+    );
+  };
+
+  const redoMove = () => {
+    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+      {
+        action: "redo",
+      },
+      "*",
+    );
+  };
+
+  const fastForward = () => {
+    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+      {
+        action: "fastforward",
+      },
+      "*",
+    );
   };
 
   return (
@@ -81,6 +156,34 @@ const ChessGame = () => {
       <div className="flex flex-col">
         <div className="relative">
           <iframe
+            onLoad={() => {
+              const fenString =
+                localStorage.getItem(CHESS_GAME_FEN_STATE) || "";
+              if (fenString?.length) {
+                setFenString(fenString);
+                const userPick =
+                  localStorage.getItem(CHESS_GAME_USER_PICK) || "";
+                const id = localStorage.getItem(CHESS_GAME_ID) || "";
+                const type = localStorage.getItem(CHESS_GAME_TYPE) || "";
+                const iframe = document.getElementById(
+                  "chessGame",
+                ) as HTMLIFrameElement;
+                iframe.contentWindow?.postMessage(
+                  {
+                    action: "launch",
+                    userPick,
+                    id,
+                    type,
+                    fenString,
+                  },
+                  "*",
+                );
+                if (type != "") {
+                  setShowCountdown(true);
+                  setGameStart(true);
+                }
+              }
+            }}
             id="chessGame"
             src="http://localhost:5500"
             className="rounded-t-lg"
@@ -88,29 +191,33 @@ const ChessGame = () => {
             height={"408"}
           />
           {showCountdown && <Countdown done={() => setShowCountdown(false)} />}
-          {showMoves && <Moves moves={new Chess(fenString).moves()} />}
+          {showMoves && <Moves moves={moves} />}
         </div>
 
         <div className="grid  w-full grid-cols-5 rounded-b-lg bg-gray-800">
           <a
+            onClick={rewindGame}
             id="chess-rewind"
-            className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
+            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
           >
             <RewindIcon />
           </a>
           <a
+            onClick={undoMove}
             id="chess-previous"
-            className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
+            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
           >
             <PreviousIcon />
           </a>
           <a
+            onClick={redoMove}
             id="chess-next"
             className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
           >
             <NextIcon />
           </a>
           <a
+            onClick={fastForward}
             id="chess-fast-forward"
             className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
           >
@@ -119,7 +226,7 @@ const ChessGame = () => {
           <a
             id="chess-fast-forward"
             onClick={() => setShowMoves(!showMoves)}
-            className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
+            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
           >
             <Menu />
           </a>
