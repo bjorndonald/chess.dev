@@ -1,10 +1,15 @@
-import GameType from "@/types/gametype";
+
 import UIFactory from "./factories/UIFactory";
 import { Color } from "chess.js";
 import ComputerUIFactory from "./factories/ComputerUIFactory";
 import { CHESS_GAME_FEN_STATE, CHESS_GAME_ID, CHESS_GAME_TYPE, CHESS_GAME_USER_PICK } from "./misc/strings";
+const GameType = {
+    Local: "Local",
+    Computer: "Computer",
+    Remote: "Remote",
+}
 let factory: UIFactory
-function receiveMessage(e: MessageEvent<{ type: GameType, id: string, fenString: string, userPick: Color, action: string }>) {
+function receiveMessage(e: MessageEvent<{ type: string, id: string, fenString: string, userPick: Color, action: string }>) {
     const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://chess-game-eosin.vercel.app" : "http://localhost:3000"
  
     if (e.origin !== origin)

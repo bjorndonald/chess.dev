@@ -8,7 +8,6 @@ import FastForwardIcon from "./FastForward.icon";
 import { Menu } from "react-feather";
 import { Chess } from "chess.js";
 import Moves from "./Moves";
-import GameType from "@/types/gametype";
 import Countdown from "./Countdown";
 import {
   CHESS_GAME_FEN_STATE,
@@ -16,6 +15,12 @@ import {
   CHESS_GAME_TYPE,
   CHESS_GAME_USER_PICK,
 } from "@/constants/strings";
+
+const GameType = {
+  Local: "Local",
+  Computer: "Computer",
+  Remote: "Remote",
+}
 
 const YOU = { value: "You" };
 const COMPUTER = { value: "Computer" };
