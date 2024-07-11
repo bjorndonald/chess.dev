@@ -1,10 +1,14 @@
+import { Chess } from "chess.js";
 import React from "react";
 
 interface Props {
-  moves: string[];
+  pgnString: string;
 }
 
-const Moves = ({ moves }: Props) => {
+const Moves = ({ pgnString }: Props) => {
+  const chess = new Chess();
+  chess.loadPgn(pgnString);
+  const moves = chess.history();
   return (
     <div className="absolute left-0 top-0 z-10 h-full w-full overflow-auto bg-[#262421]/70 pt-4">
       <h1 className="text-center font-pistilli text-4xl">Moves</h1>

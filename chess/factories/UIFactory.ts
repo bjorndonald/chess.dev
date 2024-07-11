@@ -21,12 +21,12 @@ class UIFactory {
     }
 
     rewind = async () => {
-        var i = 0
         const board = document.getElementById("board")
         await fade(board)
-        while(i < this.service.history().length){
+        while(!!this.service.history().length){
             await this.effectUndo()
         }
+        await this.effectTurn()
         await unfade(board!)
     }
 
@@ -34,26 +34,28 @@ class UIFactory {
         const move = this.service.undoMove()
         console.log(move)
         if (!move) return
-        const piece = document.getElementById(move.from)
-        
-        if (!piece) return;
+        const piece = document.getElementById(move.to)
         console.log(piece)
+        if (!piece) return;
+        
         piece.remove()
-        const hIndex = move.to[0].charCodeAt(0) - 96
-        const vIndex = parseInt(move.to[1])
+        const hIndex = move.from[0].charCodeAt(0) - 96
+        const vIndex = parseInt(move.from[1])
         const box = document.querySelector(`.row:nth-child(${vIndex}) .square:nth-child(${hIndex})`);
         const newDom = this.createPieceDOM({
             color: move.color,
-            square: move.to,
+            square: move.from,
             type: move.piece
         }, box, false)
         await unfade(newDom)
+        
     }
 
     undo = async () => {
         const board = document.getElementById("board")
         await fade(board)
         this.effectUndo()
+        await this.effectTurn()
         await unfade(board!)
     }
 
@@ -82,16 +84,17 @@ class UIFactory {
         const board = document.getElementById("board")
         await fade(board)
         await this.effectRedo()
+        await this.effectTurn()
         await unfade(board!)
     }
 
     fastFoward = async () => {
         const board = document.getElementById("board")
         await fade(board)
-        var i = 0
-        while (i < this.service.moveHistory.length) {
+        while (!!this.service.undoHistory.length) {
             await this.effectRedo()
         }
+        await this.effectTurn()
         await unfade(board!)
     }
 

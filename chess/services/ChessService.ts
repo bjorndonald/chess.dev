@@ -1,17 +1,29 @@
 import { Chess, Color, Move, Square } from 'chess.js'
-import { CHESS_GAME_FEN_STATE } from '../misc/strings'
+import { CHESS_GAME_PGN_STATE, CHESS_GAME_UNDO_HISTORY } from '../misc/strings'
 import minimax from '../misc/minmax'
 const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://chess-game-eosin.vercel.app" : "http://localhost:3000"
 class ChessService {
     private chess: Chess
-    moveHistory: Move[] = []
+    undoHistory: Move[] = []
     constructor() {
-        const fenString = localStorage.getItem(CHESS_GAME_FEN_STATE)
-        this.chess = !!fenString ? new Chess(fenString) : new Chess()
+        const pgnString = localStorage.getItem(CHESS_GAME_PGN_STATE)
+        const chess = new Chess()
+        if(!!pgnString)
+        chess.loadPgn(pgnString)
+        this.chess = chess
+        const undoHistory = localStorage.getItem(CHESS_GAME_UNDO_HISTORY)
+        if(!!undoHistory){
+            try {
+                this.undoHistory = JSON.parse(undoHistory)
+            } catch (error) {
+                this.undoHistory = []
+            }
+        }
     }
 
     saveToStore() { 
-        localStorage.setItem(CHESS_GAME_FEN_STATE, this.chess.fen())
+        localStorage.setItem(CHESS_GAME_PGN_STATE, this.chess.pgn())
+        localStorage.setItem(CHESS_GAME_UNDO_HISTORY, JSON.stringify(this.undoHistory))
     }
 
     computerMove = (col: Color) => {
@@ -28,10 +40,10 @@ class ChessService {
     }
 
     redo() {
-        const move = this.moveHistory.pop()
+        const move = this.undoHistory.pop()
         if(!!move){
             this.chess.move(move)
-            window.parent.postMessage({ fenString: this.chess.fen(), moves: this.chess.history() }, origin)
+            window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
         }
         this.saveToStore()
         return move 
@@ -47,15 +59,16 @@ class ChessService {
 
     undoMove() {
         const move = this.chess.undo()
-        this.moveHistory.push(move)
-        window.parent.postMessage({ fenString: this.chess.fen(), moves: this.chess.history() }, origin)
+        this.undoHistory.push(move)
+        window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
         this.saveToStore()
         return move
     }
 
     movePiece(move: { from: Square, to: Square }) {
        const result = this.chess.move(move)
-        window.parent.postMessage({ fenString: this.chess.fen(), moves: this.chess.history() }, origin)
+        window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
+        this.undoHistory = []
         this.saveToStore()
         return result
     }

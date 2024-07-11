@@ -24,6 +24,7 @@ const caretVariants: Variants = {
 
 interface ISelectProps {
   placeholder: string;
+  onTextChange: (str: string) => void;
   onChange: (str: string) => void;
   list: {
     value: string;
@@ -31,7 +32,12 @@ interface ISelectProps {
   }[];
 }
 
-const Select = ({ onChange, list, placeholder }: ISelectProps) => {
+const Select = ({
+  onChange,
+  onTextChange,
+  list,
+  placeholder,
+}: ISelectProps) => {
   const [showList, setShowList] = useState(false);
   const [value, setValue] = useState("");
   const [inputBool, setInputBool] = useState(false);
@@ -58,8 +64,12 @@ const Select = ({ onChange, list, placeholder }: ISelectProps) => {
 
         {!!inputBool && (
           <input
+            required
+            onChange={e => {
+              onTextChange(e.target.value);
+            }}
             className="flex h-full grow border-none bg-transparent text-lg text-white outline-none placeholder:opacity-60"
-            type="text"
+            type="email"
             placeholder={"Enter email"}
           />
         )}

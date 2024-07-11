@@ -10,40 +10,62 @@ import { Chess } from "chess.js";
 import Moves from "./Moves";
 import Countdown from "./Countdown";
 import {
-  CHESS_GAME_FEN_STATE,
   CHESS_GAME_ID,
+  CHESS_GAME_PGN_STATE,
   CHESS_GAME_TYPE,
   CHESS_GAME_USER_PICK,
 } from "@/constants/strings";
+import { createGame } from "@/actions/game";
+import Game from "@/types/game";
+import useGame from "@/store/game";
+import ShareModal from "../Shared/ShareModal";
+import toast from "react-hot-toast";
 
 const GameType = {
   Local: "Local",
   Computer: "Computer",
   Remote: "Remote",
-}
+};
 
 const YOU = { value: "You" };
 const COMPUTER = { value: "Computer" };
 const PERSON = { value: "Enter Email", input: true };
 
-const playerList = [YOU, COMPUTER];
+const playerList = [YOU, COMPUTER, PERSON];
 
 const ChessGame = () => {
   const [showMoves, setShowMoves] = useState(false);
-  const [fenString, setFenString] = useState(new Chess().fen());
+  const [pgnString, setPgnString] = useState(new Chess().pgn());
   const [gameStart, setGameStart] = useState(false);
-  const [moves, setMoves] = useState<string[]>([]);
+  const shareModal = useGame(s => s.shareModal);
+  const showShareModal = useGame(s => s.showShareModal);
   const [showCountdown, setShowCountdown] = useState(false);
   const [whitePlayer, setWhitePlayer] = useState("");
   const [blackPlayer, setBlackPlayer] = useState("");
+  const [email, setEmail] = useState("");
 
-  const startGame = () => {
+  const startGame = e => {
+    e.preventDefault();
+    if (whitePlayer === PERSON.value || blackPlayer === PERSON.value) {
+      localStorage.setItem(
+        CHESS_GAME_TYPE,
+        whitePlayer === COMPUTER.value || blackPlayer === COMPUTER.value
+          ? GameType.Computer
+          : GameType.Remote,
+      );
+      saveGame();
+      return;
+    }
     const bool =
       (whitePlayer === COMPUTER.value && blackPlayer === YOU.value) ||
       (whitePlayer === YOU.value && blackPlayer === COMPUTER.value) ||
       (whitePlayer === PERSON.value && blackPlayer === YOU.value) ||
       (whitePlayer === YOU.value && blackPlayer === PERSON.value);
-    if (!bool) return;
+
+    if (!bool) {
+      toast.error("Invalid inputs");
+      return;
+    }
     const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
     iframe.contentWindow?.postMessage(
       {
@@ -63,16 +85,32 @@ const ChessGame = () => {
       CHESS_GAME_USER_PICK,
       whitePlayer === YOU.value ? "w" : "b",
     );
-    localStorage.setItem(CHESS_GAME_FEN_STATE, new Chess().fen());
+    localStorage.setItem(CHESS_GAME_PGN_STATE, new Chess().fen());
     localStorage.setItem(
       CHESS_GAME_TYPE,
       whitePlayer === COMPUTER.value || blackPlayer === COMPUTER.value
         ? GameType.Computer
         : GameType.Remote,
     );
-    setFenString(new Chess().fen());
+    setPgnString(new Chess().pgn());
     setShowCountdown(true);
     setGameStart(true);
+  };
+
+  const saveGame = async () => {
+    const gameType = localStorage.getItem(CHESS_GAME_TYPE)
+      ? localStorage.getItem(CHESS_GAME_TYPE)
+      : GameType.Local;
+    const game = await createGame(
+      {
+        pgnString: new Chess().pgn(),
+        type: gameType,
+      } as unknown as Game,
+      whitePlayer === YOU.value ? "w" : "b",
+      email,
+    );
+
+    showShareModal(game);
   };
 
   const resetGame = () => {
@@ -87,14 +125,14 @@ const ChessGame = () => {
     localStorage.removeItem(CHESS_GAME_USER_PICK);
     localStorage.removeItem(CHESS_GAME_ID);
     localStorage.removeItem(CHESS_GAME_TYPE);
-    localStorage.removeItem(CHESS_GAME_FEN_STATE);
-    setFenString(new Chess().fen());
-    setMoves([]);
+    localStorage.removeItem(CHESS_GAME_PGN_STATE);
+    setPgnString(new Chess().pgn());
     setGameStart(false);
   };
 
   useEffect(() => {
-    fenString;
+    const pgn = localStorage.getItem(CHESS_GAME_PGN_STATE) || "";
+    setPgnString(pgn);
     window.addEventListener("message", handleEvent, false);
 
     return () => {
@@ -102,18 +140,15 @@ const ChessGame = () => {
     };
   }, []);
 
-  const handleEvent = (
-    e: MessageEvent<{ fenString: string; moves: string[] }>,
-  ) => {
+  const handleEvent = (e: MessageEvent<{ pgnString: string }>) => {
     if (
       !process.env.NEXTAUTH_URL?.includes(e.origin) &&
       e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
     ) {
       return;
     }
-    setMoves(e.data.moves);
-    setFenString(e.data.fenString);
-    localStorage.setItem(CHESS_GAME_FEN_STATE, e.data.fenString);
+    setPgnString(e.data.pgnString);
+    localStorage.setItem(CHESS_GAME_PGN_STATE, e.data.pgnString);
   };
 
   const undoMove = () => {
@@ -157,15 +192,19 @@ const ChessGame = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <form
+      onSubmit={startGame}
+      className="flex w-full flex-col items-center gap-4"
+    >
+      {!!shareModal && <ShareModal />}
       <div className="flex flex-col">
         <div className="relative">
           <iframe
             onLoad={() => {
-              const fenString =
-                localStorage.getItem(CHESS_GAME_FEN_STATE) || "";
-              if (fenString?.length) {
-                setFenString(fenString);
+              const pgnString =
+                localStorage.getItem(CHESS_GAME_PGN_STATE) || "";
+              if (pgnString?.length) {
+                setPgnString(pgnString);
                 const userPick =
                   localStorage.getItem(CHESS_GAME_USER_PICK) || "";
                 const id = localStorage.getItem(CHESS_GAME_ID) || "";
@@ -179,7 +218,7 @@ const ChessGame = () => {
                     userPick,
                     id,
                     type,
-                    fenString,
+                    pgnString,
                   },
                   "*",
                 );
@@ -196,7 +235,7 @@ const ChessGame = () => {
             height={"408"}
           />
           {showCountdown && <Countdown done={() => setShowCountdown(false)} />}
-          {showMoves && <Moves moves={moves} />}
+          {showMoves && <Moves pgnString={pgnString} />}
         </div>
 
         <div className="grid  w-full grid-cols-5 rounded-b-lg bg-gray-800">
@@ -238,14 +277,20 @@ const ChessGame = () => {
         </div>
       </div>
       {!!gameStart && (
-        <>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={saveGame}
+            className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
+          >
+            SAVE
+          </button>
           <button
             onClick={resetGame}
             className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
           >
             RESET
           </button>
-        </>
+        </div>
       )}
       {!gameStart && (
         <>
@@ -253,13 +298,10 @@ const ChessGame = () => {
             <div className="flex flex-[0.5] flex-col gap-2">
               <small>White</small>
               <Select
+                onTextChange={str => setEmail(str)}
                 list={playerList}
                 onChange={str => {
-                  if (str === YOU.value) {
-                    setBlackPlayer(COMPUTER.value);
-                  } else if (str === COMPUTER.value) {
-                    setBlackPlayer(YOU.value);
-                  }
+                  setWhitePlayer(str);
                 }}
                 placeholder="White player"
               />
@@ -268,27 +310,24 @@ const ChessGame = () => {
             <div className="flex flex-[0.5] flex-col gap-2">
               <small>Black</small>
               <Select
+                onTextChange={str => setEmail(str)}
                 list={playerList}
                 onChange={str => {
-                  if (str === YOU.value) {
-                    setWhitePlayer(COMPUTER.value);
-                  } else if (str === COMPUTER.value) {
-                    setWhitePlayer(YOU.value);
-                  }
+                  setBlackPlayer(str);
                 }}
                 placeholder="Black player"
               />
             </div>
           </div>
           <button
-            onClick={startGame}
+            type="submit"
             className="btn btn-primary btn-block font-pistilli text-sm uppercase text-white/75 "
           >
             START
           </button>
         </>
       )}
-    </div>
+    </form>
   );
 };
 
