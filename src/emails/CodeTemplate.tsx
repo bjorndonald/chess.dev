@@ -1,8 +1,6 @@
-import React from 'react'
-import icon from '@/assets/images/fulllogo.png'
-import Image from 'next/image'
+import React from "react"
 
-const CodeTemplate = ({link}: {link: string}) => {
+const CodeTemplate = ({ link }: { link: string }) => {
   return (
     <div style={{
       marginBottom: 100,

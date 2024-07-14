@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 export const createGame = async (game: Game, userPick: Color, opponent: string) => {
     try {
-        toast.loading("Loading...", {id: "loading"})
+        toast.loading("Loading...", { id: "loading" })
         const res = await axios.post("/api/game", { ...game, userPick, opponent })
         toast.remove("loading")
         toast.success("Game created")
@@ -38,7 +38,7 @@ export const updateGame = async (id: string, move: Move) => {
         }
         return game
     } catch (error) {
-        
+        //
     }
 }
 

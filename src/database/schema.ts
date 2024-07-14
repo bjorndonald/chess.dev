@@ -1,9 +1,7 @@
 import {
     timestamp,
     pgTable,
-    text,
-    numeric
-} from "drizzle-orm/pg-core"
+    text} from "drizzle-orm/pg-core"
 
 export const games = pgTable("games", {
     id: text("id")
