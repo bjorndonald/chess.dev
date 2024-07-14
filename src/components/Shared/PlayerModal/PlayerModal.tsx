@@ -14,9 +14,10 @@ const PlayerModal = ({ id }: { id: string }) => {
       </div>
 
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           navigate.replace(`/game/${id}?player=${playerCode}`);
+          navigate.refresh()
         }}
         className="my-4"
       >
