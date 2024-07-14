@@ -17,7 +17,7 @@ const PlayerModal = ({ id }: { id: string }) => {
         onSubmit={e => {
           e.preventDefault();
           navigate.replace(`/game/${id}?player=${playerCode}`);
-          navigate.refresh()
+          navigate.refresh();
         }}
         className="my-4"
       >

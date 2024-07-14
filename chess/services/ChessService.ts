@@ -54,6 +54,7 @@ class ChessService {
     }
 
     inCheckmate() {
+        
         return this.chess.isCheckmate()
     }
 

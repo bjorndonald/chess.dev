@@ -20,6 +20,7 @@ import Game from "@/types/game";
 import useGame from "@/store/game";
 import ShareModal from "../Shared/ShareModal";
 import toast from "react-hot-toast";
+import CheckmateModal from "../Shared/CheckmateModal";
 
 const GameType = {
   Local: "Local",
@@ -34,6 +35,7 @@ const PERSON = { value: "Enter Email", input: true };
 const playerList = [YOU, COMPUTER, PERSON];
 
 const ChessGame = () => {
+  const [checkmate, setCheckmate] = useState(false);
   const [showMoves, setShowMoves] = useState(false);
   const [pgnString, setPgnString] = useState(new Chess().pgn());
   const [gameStart, setGameStart] = useState(false);
@@ -149,6 +151,11 @@ const ChessGame = () => {
     }
     setPgnString(e.data.pgnString);
     localStorage.setItem(CHESS_GAME_PGN_STATE, e.data.pgnString);
+    const chess = new Chess();
+    chess.loadPgn(pgnString);
+    chess.inCheck() &&
+      toast.success(`${chess.turn() === "w" ? "Black" : "White"} is in check`);
+    chess.isCheckmate() && setCheckmate(true);
   };
 
   const undoMove = () => {
@@ -194,7 +201,7 @@ const ChessGame = () => {
   return (
     <>
       {!!shareModal && <ShareModal />}
-
+      {!!checkmate && <CheckmateModal pgnString={pgnString} />}
       <form
         onSubmit={startGame}
         className="flex w-full flex-col items-center gap-4"

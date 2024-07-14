@@ -13,6 +13,8 @@ import { updateGame } from "@/actions/game";
 import Game from "@/types/game";
 import PlayerModal from "../Shared/PlayerModal";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import CheckmateModal from "../Shared/CheckmateModal";
 
 const GameType = {
   Local: "Local",
@@ -29,6 +31,7 @@ interface Props {
 
 const SavedGame = ({ player, game }: Props) => {
   const navigate = useRouter();
+  const [checkmate, setCheckmate] = useState(false);
   const [showMoves, setShowMoves] = useState(false);
   const [pgnString, setPgnString] = useState(game?.pgnString);
   const [showPlayerModal, setShowPlayerModal] = useState(false);
@@ -76,6 +79,11 @@ const SavedGame = ({ player, game }: Props) => {
       from: e.data.move.from,
       to: e.data.move.to,
     } as Move);
+    const chess = new Chess();
+    chess.loadPgn(pgnString);
+    chess.inCheck() &&
+      toast.success(`${chess.turn() === "w" ? "Black" : "White"} is in check`);
+    chess.isCheckmate() && setCheckmate(true);
   };
 
   const undoMove = () => {
@@ -127,6 +135,7 @@ const SavedGame = ({ player, game }: Props) => {
 
   return (
     <>
+      {!!checkmate && <CheckmateModal pgnString={pgnString} />}
       <div className="my-8">
         <h1 className="my-8 text-center font-pistilli text-4xl font-bold md:text-5xl">
           Here&apos;s the chess game
