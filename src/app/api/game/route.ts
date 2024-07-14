@@ -40,7 +40,7 @@ export async function POST(req: Request) {
           "X-Entity-Ref-ID": "123456789",
         },
         react: CodeTemplate({
-          link: `${process.env.NEXTAUTH_URL}/${game.id}?player=${userPick === "w" ? black : white}`,
+          link: `${process.env.NEXTAUTH_URL}/game/${game.id}?player=${userPick === "w" ? black : white}`,
         }),
       });
     }

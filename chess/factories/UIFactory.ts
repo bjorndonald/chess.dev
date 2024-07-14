@@ -4,7 +4,7 @@ import ChessService from "../services/ChessService"
 import { Piece } from "../types/square"
 import { addClass, fade, getChildElementIndex, removeClass, unfade } from "../misc/func"
 
-const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://chess-game-eosin.vercel.app" : "http://localhost:3000"
+const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
 
 class UIFactory {
     service: ChessService
@@ -32,10 +32,9 @@ class UIFactory {
 
     effectUndo = async () => {
         const move = this.service.undoMove()
-        console.log(move)
         if (!move) return
         const piece = document.getElementById(move.to)
-        console.log(piece)
+       
         if (!piece) return;
         
         piece.remove()
@@ -235,7 +234,7 @@ class UIFactory {
             const x = move[move.length - 2].charCodeAt(0);
             const box = document.querySelector(`.row:nth-child(${move[move.length - 1]}) .square:nth-child(${x - 96})`);
             const piece = this.service.getPieceBySquare(move as Square)
-            console.log(piece, move)
+            
             if (move.includes("x")) {
                 
                     const danger = document.createElement("div");

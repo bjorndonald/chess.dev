@@ -8,11 +8,8 @@ interface Props {
 }
 
 export default async function Game({ params: { id }, searchParams }: Props) {
-  console.log(id);
   const game = await getGameById(id);
-
   const player = searchParams["player"];
-
   return (
     <main className="relative">
       <div className="container mx-auto flex max-w-xl flex-col items-center">

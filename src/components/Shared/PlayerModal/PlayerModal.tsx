@@ -31,7 +31,7 @@ const PlayerModal = ({ id }: { id: string }) => {
             minLength={6}
             className="w-full overflow-x-hidden text-ellipsis whitespace-nowrap bg-transparent outline-none"
             type="text"
-            placeholder="link"
+            placeholder="Code"
             value={playerCode}
             onChange={e => setPlayerCode(e.target.value)}
           />

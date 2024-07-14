@@ -50,7 +50,6 @@ class ComputerUIFactory extends UIFactory {
             await piece.forEach(el => {
                 removeClass(el, "rotate-180")
             })
-            console.log(this.userPick)
             await numberList.forEach(el => {
                 removeClass(el, "rotate-180")
             })

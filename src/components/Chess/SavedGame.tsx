@@ -30,17 +30,29 @@ interface Props {
 const SavedGame = ({ player, game }: Props) => {
   const navigate = useRouter();
   const [showMoves, setShowMoves] = useState(false);
-  const [pgnString, setPgnString] = useState(game.pgnString);
+  const [pgnString, setPgnString] = useState(game?.pgnString);
   const [showPlayerModal, setShowPlayerModal] = useState(false);
   const [showCountdown, setShowCountdown] = useState(false);
   const [whitePlayer] = useState(game.white === player ? YOU.value : "");
 
   useEffect(() => {
-    localStorage.setItem(CHESS_GAME_PGN_STATE, game.pgnString);
+    localStorage.setItem(CHESS_GAME_PGN_STATE, game?.pgnString);
     window.addEventListener("message", handleEvent, false);
-    if (!player.length && game.type !== GameType.Local) {
+    if (!player?.length && game.type !== GameType.Local) {
       setShowPlayerModal(true);
     }
+
+    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+      {
+        action: "launch",
+        userPick: whitePlayer === YOU.value ? "w" : "b",
+        id: game.id,
+        type: game.type,
+        pgnString: pgnString,
+      },
+      "*",
+    );
 
     return () => {
       window.removeEventListener("message", handleEvent, false);
@@ -56,12 +68,13 @@ const SavedGame = ({ player, game }: Props) => {
     ) {
       return;
     }
+
+    setPgnString(e.data.pgnString);
+    localStorage.setItem(CHESS_GAME_PGN_STATE, e.data.pgnString);
     await updateGame(game.id, {
       from: e.data.move.from,
       to: e.data.move.to,
     } as Move);
-    setPgnString(e.data.pgnString);
-    localStorage.setItem(CHESS_GAME_PGN_STATE, e.data.pgnString);
   };
 
   const undoMove = () => {
@@ -127,28 +140,8 @@ const SavedGame = ({ player, game }: Props) => {
         <div className="flex flex-col">
           <div className="relative">
             <iframe
-              onLoad={() => {
-                const pgnString =
-                  localStorage.getItem(CHESS_GAME_PGN_STATE) || "";
-                setTimeout(() => {
-                  console.log(game);
-                  const iframe = document.getElementById(
-                    "chessGame",
-                  ) as HTMLIFrameElement;
-                  iframe.contentWindow?.postMessage(
-                    {
-                      action: "launch",
-                      userPick: whitePlayer === YOU.value ? "w" : "b",
-                      id: game.id,
-                      type: game.type,
-                      pgnString: pgnString,
-                    },
-                    "*",
-                  );
-                }, 1000);
-              }}
               id="chessGame"
-              src="http://localhost:5500"
+              src={process.env.NEXT_PUBLIC_CHESS_PAGE}
               className="rounded-t-lg"
               width={"386"}
               height={"408"}

@@ -1,7 +1,6 @@
 import { db } from "@/database";
 import { games } from "@/database/schema";
 import { updateGameSchema } from "@/lib/game-schema";
-import axios from "axios";
 import { Chess } from "chess.js";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -26,7 +25,6 @@ export async function GET(
       game: game[0],
     });
   } catch (error) {
-    console.log(error.message);
     return NextResponse.json(
       {
         status: "error",
@@ -42,14 +40,25 @@ export async function PUT(
   { params }: { params: { id: string } },
 ) {
   try {
-    const game = await db
-      .select()
-      .from(games)
-      .where(eq(games.id, params.id))[0];
+    const game = await db.select().from(games).where(eq(games.id, params.id));
+    if (game.length == 0) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: "Game not found",
+        },
+        { status: 404 },
+      );
+    }
     const chess = new Chess();
-    chess.loadPgn(game.pgnString);
+    chess.loadPgn(game[0].pgnString);
     const { from, to } = updateGameSchema.parse(await req.json());
-    chess.move({ from, to });
+    try {
+      chess.move({ from, to });
+    } catch (error) {
+      // Invalid move
+    }
+
     const updatedGame = await db
       .update(games)
       .set({
@@ -57,19 +66,10 @@ export async function PUT(
         updated_at: new Date(),
       })
       .where(eq(games.id, params.id))
-      .returning()[0];
-    if (updatedGame.type === "Remote") {
-      await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/stream/" + game.id,
-        {
-          gameId: updatedGame.id,
-          move: { from, to },
-        },
-      );
-    }
+      .returning();
 
     return NextResponse.json({
-      game: updatedGame,
+      game: updatedGame[0],
     });
   } catch (error) {
     return NextResponse.json(

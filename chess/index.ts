@@ -16,7 +16,7 @@ function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: s
     if (e.origin !== origin)
         return;
     if (e.data.action === "launch") {
-        console.log(e.data)
+       
         localStorage.setItem(CHESS_GAME_USER_PICK, e.data.userPick)
         localStorage.setItem(CHESS_GAME_ID, e.data.id)
         localStorage.setItem(CHESS_GAME_TYPE, e.data.type)
@@ -25,7 +25,7 @@ function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: s
         if (e.data.type === GameType.Computer)
             factory = new ComputerUIFactory()
         if (e.data.type === GameType.Remote)
-            factory = new RemoteFactory(e.data.userPick)
+            factory = new RemoteFactory()
         else factory = new UIFactory()
     }
 

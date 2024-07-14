@@ -11,7 +11,8 @@ import Link from "next/link";
 const ShareModal = () => {
   const shareModal = useGame(s => s.shareModal);
   const showShareModal = useGame(s => s.showShareModal);
-  const shareLink = `${process.env.NEXT_PUBLIC_DOMAIN_URI}/translation/${shareModal.id}?${shareModal.black || shareModal.white}`;
+  const shareLink = `${process.env.NEXT_PUBLIC_DOMAIN_URI}/game/${shareModal.id}?player=${shareModal.black || shareModal.white}`;
+
   return (
     <Modal show={!!shareModal} onClose={() => showShareModal(undefined)}>
       <div className="flex items-center justify-center">

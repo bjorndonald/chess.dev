@@ -8,7 +8,7 @@ export default function NotFound() {
     <section
       id="error"
       className={
-        "tablet-sm:-mb-8 -m-7 flex h-full w-full flex-1 flex-col gap-5"
+        "tablet-sm:-mb-8 -m-7 flex h-full w-full flex-1 flex-col items-center justify-center gap-5 py-24"
       }
     >
       <h1 className={"mb-4 text-red-500"}>Woops! ~ Page not found</h1>
@@ -20,7 +20,7 @@ export default function NotFound() {
       <Link
         href={"/"}
         title={"Home page"}
-        className={"btn btn-primary mb-5 mt-1.5"}
+        className={"btn btn-ghost mb-5 mt-1.5"}
       >
         Go back home
       </Link>
@@ -28,7 +28,7 @@ export default function NotFound() {
         src={"/site/404.gif"}
         alt={"John Travolta gif"}
         className={"mx-auto mt-auto w-full"}
-        style={{ maxWidth: 425, filter: "drop-shadow(0 0 2px #fff)" }}
+        style={{ maxWidth: 325, filter: "drop-shadow(0 0 2px #fff)" }}
       />
     </section>
   );
@@ -38,5 +38,5 @@ export const metadata = createMetadata({
   title: "Page not found",
   description: "The page you're looking for doesn't exist or has been moved.",
   keywords: ["404", "not found", "page not found"],
-  image: `${process.env.NEXT_PUBLIC_DOMAIN_URI}/404-og.png`,
+  image: "https://tuniko.info/404-og.png",
 });

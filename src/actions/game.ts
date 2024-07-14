@@ -20,10 +20,25 @@ export const createGame = async (game: Game, userPick: Color, opponent: string) 
 export const updateGame = async (id: string, move: Move) => {
     try {
         const res = await axios.put("/api/game/"+id, move)
+        const game = res.data.game as Game
         
-        return res.data.game as Game
+        if(game.type === "Remote") {
+            await axios.post(
+                process.env.NEXT_PUBLIC_BACKEND_URL + "/stream/" + id,
+                {
+                    gameId: id,
+                    move,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            );
+        }
+        return game
     } catch (error) {
-        toast.error("Network Error")
+        
     }
 }
 

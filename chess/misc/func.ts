@@ -5,10 +5,12 @@ export function hasClass(el: Element, className: string) {
 }
 
 export function addClass(el: Element, className: string) {
+    
     if (el.classList)
         el.classList.add(className)
     else if (!hasClass(el, className))
         el.className += " " + className;
+    
 }
 
 export function removeClass(el: Element, className: string) {

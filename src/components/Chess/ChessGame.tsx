@@ -192,142 +192,147 @@ const ChessGame = () => {
   };
 
   return (
-    <form
-      onSubmit={startGame}
-      className="flex w-full flex-col items-center gap-4"
-    >
+    <>
       {!!shareModal && <ShareModal />}
-      <div className="flex flex-col">
-        <div className="relative">
-          <iframe
-            onLoad={() => {
-              const pgnString =
-                localStorage.getItem(CHESS_GAME_PGN_STATE) || "";
-              if (pgnString?.length) {
-                setPgnString(pgnString);
-                const userPick =
-                  localStorage.getItem(CHESS_GAME_USER_PICK) || "";
-                const id = localStorage.getItem(CHESS_GAME_ID) || "";
-                const type = localStorage.getItem(CHESS_GAME_TYPE) || "";
-                const iframe = document.getElementById(
-                  "chessGame",
-                ) as HTMLIFrameElement;
-                iframe.contentWindow?.postMessage(
-                  {
-                    action: "launch",
-                    userPick,
-                    id,
-                    type,
-                    pgnString,
-                  },
-                  "*",
-                );
-                if (type != "") {
-                  setShowCountdown(true);
-                  setGameStart(true);
-                }
-              }
-            }}
-            id="chessGame"
-            src="http://localhost:5500"
-            className="rounded-t-lg"
-            width={"386"}
-            height={"408"}
-          />
-          {showCountdown && <Countdown done={() => setShowCountdown(false)} />}
-          {showMoves && <Moves pgnString={pgnString} />}
-        </div>
 
-        <div className="grid  w-full grid-cols-5 rounded-b-lg bg-gray-800">
-          <a
-            onClick={rewindGame}
-            id="chess-rewind"
-            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
-          >
-            <RewindIcon />
-          </a>
-          <a
-            onClick={undoMove}
-            id="chess-previous"
-            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
-          >
-            <PreviousIcon />
-          </a>
-          <a
-            onClick={redoMove}
-            id="chess-next"
-            className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
-          >
-            <NextIcon />
-          </a>
-          <a
-            onClick={fastForward}
-            id="chess-fast-forward"
-            className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
-          >
-            <FastForwardIcon />
-          </a>
-          <a
-            id="chess-fast-forward"
-            onClick={() => setShowMoves(!showMoves)}
-            className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
-          >
-            <Menu />
-          </a>
-        </div>
-      </div>
-      {!!gameStart && (
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={saveGame}
-            className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
-          >
-            SAVE
-          </button>
-          <button
-            onClick={resetGame}
-            className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
-          >
-            RESET
-          </button>
-        </div>
-      )}
-      {!gameStart && (
-        <>
-          <div className="flex w-full items-center gap-4">
-            <div className="flex flex-[0.5] flex-col gap-2">
-              <small>White</small>
-              <Select
-                onTextChange={str => setEmail(str)}
-                list={playerList}
-                onChange={str => {
-                  setWhitePlayer(str);
-                }}
-                placeholder="White player"
-              />
-            </div>
-            <div className="divider divider-horizontal pt-8 text-xs">VS</div>
-            <div className="flex flex-[0.5] flex-col gap-2">
-              <small>Black</small>
-              <Select
-                onTextChange={str => setEmail(str)}
-                list={playerList}
-                onChange={str => {
-                  setBlackPlayer(str);
-                }}
-                placeholder="Black player"
-              />
-            </div>
+      <form
+        onSubmit={startGame}
+        className="flex w-full flex-col items-center gap-4"
+      >
+        <div className="flex flex-col">
+          <div className="relative">
+            <iframe
+              onLoad={() => {
+                const pgnString =
+                  localStorage.getItem(CHESS_GAME_PGN_STATE) || "";
+                if (pgnString?.length) {
+                  setPgnString(pgnString);
+                  const userPick =
+                    localStorage.getItem(CHESS_GAME_USER_PICK) || "";
+                  const id = localStorage.getItem(CHESS_GAME_ID) || "";
+                  const type = localStorage.getItem(CHESS_GAME_TYPE) || "";
+                  const iframe = document.getElementById(
+                    "chessGame",
+                  ) as HTMLIFrameElement;
+                  iframe.contentWindow?.postMessage(
+                    {
+                      action: "launch",
+                      userPick,
+                      id,
+                      type,
+                      pgnString,
+                    },
+                    "*",
+                  );
+                  if (type != "") {
+                    setShowCountdown(true);
+                    setGameStart(true);
+                  }
+                }
+              }}
+              id="chessGame"
+              src={process.env.NEXT_PUBLIC_CHESS_PAGE}
+              className="rounded-t-lg"
+              width={"386"}
+              height={"408"}
+            />
+            {showCountdown && (
+              <Countdown done={() => setShowCountdown(false)} />
+            )}
+            {showMoves && <Moves pgnString={pgnString} />}
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary btn-block font-pistilli text-sm uppercase text-white/75 "
-          >
-            START
-          </button>
-        </>
-      )}
-    </form>
+
+          <div className="grid  w-full grid-cols-5 rounded-b-lg bg-gray-800">
+            <a
+              onClick={rewindGame}
+              id="chess-rewind"
+              className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
+            >
+              <RewindIcon />
+            </a>
+            <a
+              onClick={undoMove}
+              id="chess-previous"
+              className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
+            >
+              <PreviousIcon />
+            </a>
+            <a
+              onClick={redoMove}
+              id="chess-next"
+              className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
+            >
+              <NextIcon />
+            </a>
+            <a
+              onClick={fastForward}
+              id="chess-fast-forward"
+              className="center flex h-[42px] flex-[0.25] cursor-pointer items-center justify-center"
+            >
+              <FastForwardIcon />
+            </a>
+            <a
+              id="chess-fast-forward"
+              onClick={() => setShowMoves(!showMoves)}
+              className="center flex h-[42px] flex-1 cursor-pointer items-center justify-center"
+            >
+              <Menu />
+            </a>
+          </div>
+        </div>
+        {!!gameStart && (
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={saveGame}
+              className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
+            >
+              SAVE
+            </button>
+            <button
+              onClick={resetGame}
+              className="btn btn-primary font-pistilli text-sm uppercase text-white/75 "
+            >
+              RESET
+            </button>
+          </div>
+        )}
+        {!gameStart && (
+          <>
+            <div className="flex w-full items-center gap-4">
+              <div className="flex flex-[0.5] flex-col gap-2">
+                <small>White</small>
+                <Select
+                  onTextChange={str => setEmail(str)}
+                  list={playerList}
+                  onChange={str => {
+                    setWhitePlayer(str);
+                  }}
+                  placeholder="White player"
+                />
+              </div>
+              <div className="divider divider-horizontal pt-8 text-xs">VS</div>
+              <div className="flex flex-[0.5] flex-col gap-2">
+                <small>Black</small>
+                <Select
+                  onTextChange={str => setEmail(str)}
+                  list={playerList}
+                  onChange={str => {
+                    setBlackPlayer(str);
+                  }}
+                  placeholder="Black player"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block font-pistilli text-sm uppercase text-white/75 "
+            >
+              START
+            </button>
+          </>
+        )}
+      </form>
+    </>
   );
 };
 
