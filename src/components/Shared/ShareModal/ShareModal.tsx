@@ -75,7 +75,7 @@ const ShareModal = () => {
             Copy
           </button>
         </div>
-        <div className="flex mt-4 justify-center">
+        <div className="mt-4 flex justify-center">
           <Link href={shareLink} passHref>
             <a
               target="_blank"
