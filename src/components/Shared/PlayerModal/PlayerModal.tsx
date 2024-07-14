@@ -8,14 +8,14 @@ const PlayerModal = ({ id }: { id: string }) => {
   const navigate = useRouter();
   const [playerCode, setPlayerCode] = useState("");
   return (
-    <Modal show onClose={() => navigate.push(`/${id}`)}>
+    <Modal show onClose={() => navigate.push(`/game/${id}`)}>
       <div className="flex items-center justify-center">
         <p className="text-xl font-bold">Input your player code</p>
       </div>
 
       <form
         onSubmit={() => {
-          navigate.replace(`/${id}?player=${playerCode}`);
+          navigate.replace(`/game/${id}?player=${playerCode}`);
         }}
         className="my-4"
       >

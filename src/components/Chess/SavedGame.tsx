@@ -34,11 +34,12 @@ const SavedGame = ({ player, game }: Props) => {
   const [showPlayerModal, setShowPlayerModal] = useState(false);
   const [showCountdown, setShowCountdown] = useState(false);
   const [whitePlayer] = useState(game.white === player ? YOU.value : "");
+  const [blackPlayer] = useState(game.black === player ? YOU.value : "");
 
   useEffect(() => {
     localStorage.setItem(CHESS_GAME_PGN_STATE, game?.pgnString);
     window.addEventListener("message", handleEvent, false);
-    if (!player?.length && game.type !== GameType.Local) {
+    if (!whitePlayer && !blackPlayer && game.type !== GameType.Local) {
       setShowPlayerModal(true);
     }
 

@@ -75,6 +75,17 @@ const ShareModal = () => {
             Copy
           </button>
         </div>
+        <div className="flex mt-4 justify-center">
+          <Link href={shareLink} passHref>
+            <a
+              target="_blank"
+              className="btn btn-primary btn-sm"
+              onClick={() => showShareModal(undefined)}
+            >
+              Open Game
+            </a>
+          </Link>
+        </div>
       </div>
     </Modal>
   );
