@@ -97,5 +97,46 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  daisyui: {
+    themes: [{
+      light: {
+        "primary": "#010101",
+        "primary-content": "#ffffff",
+        "secondary": "#010101",
+        "accent": "#010101",
+        "base-100": "#000000",
+        "base-200": "#010101",
+        "base-300": "#202020",
+        "base-content": "#fff",
+        "neutral": "#0000",
+        "neutral-content": "#fff",
+        "success": "rgba(16, 185, 129)",
+        "success-content": "#ffffff",
+        "error": "rgba(244, 63, 94)",
+        "error-content": "#ffffff",
+        "warning": "rgba(234, 179, 8)",
+        "warning-content": "#ffffff",
+      },
+
+      dark: {
+        "primary": "#010101",
+        "primary-content": "#ffffff",
+        "secondary": "#010101",
+        "accent": "#010101",
+        "base-100": "#000000",
+        "base-200": "#010101",
+        "base-300": "#202020",
+        "base-content": "#fff",
+        "neutral": "#0000",
+        "neutral-content": "#fff",
+        "success": "rgba(16, 185, 129)",
+        "success-content": "#ffffff",
+        "error": "rgba(244, 63, 94)",
+        "error-content": "#ffffff",
+        "warning": "rgba(234, 179, 8)",
+        "warning-content": "#ffffff",
+      },
+    }]
+  },
 }
 export default config

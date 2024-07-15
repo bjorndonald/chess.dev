@@ -197,7 +197,7 @@ class UIFactory {
         this.removePossibleMoves()
         await this.changeTurn()
         if (this.service.inCheckmate())
-            alert(this.service.getTurn() === "b" ? "Black is in check" : "White is in check")
+            alert(this.service.getTurn() === "b" ? "White is the winner" : "Black is the winner")
         else if (this.service.inCheck())
             alert(this.service.getTurn() === "b" ? "Black is in check" : "White is in check")
     }
