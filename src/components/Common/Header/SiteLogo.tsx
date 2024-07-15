@@ -15,7 +15,7 @@ const SiteLogo = () => {
         setPosition(Math.random() < 0.5);
         setHover(true);
       }}
-      className="btn btn-ghost flex"
+      className="btn btn-sm tablet-md:btn-md btn-ghost flex"
     >
       <motion.div
         animate={
@@ -35,7 +35,7 @@ const SiteLogo = () => {
       >
         <KingIcon innerColor="black" outerColor="white" />
       </motion.div>
-      <h1 className="font-queen text-4xl text-white">Quick Chess</h1>
+      <h1 className="font-queen text-xl tablet-md:text-4xl text-white">Quick Chess</h1>
       <motion.div
         animate={
           hover
