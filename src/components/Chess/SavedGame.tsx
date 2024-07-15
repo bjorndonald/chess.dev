@@ -56,9 +56,9 @@ const SavedGame = ({ player, game }: Props) => {
   ) => {
     console.log(e.origin, e.data);
     console.log(
-      !process.env.NEXTAUTH_URL?.includes(e.origin) &&
-      e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
-    )
+      process.env.NEXTAUTH_URL?.includes(e.origin) ||
+        e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE,
+    );
     if (
       !process.env.NEXTAUTH_URL?.includes(e.origin) &&
       e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
