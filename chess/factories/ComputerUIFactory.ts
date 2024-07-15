@@ -2,7 +2,6 @@ import { Color, Move, Square } from "chess.js";
 import UIFactory from "./UIFactory";
 import { addClass, fade, removeClass, unfade } from "../misc/func";
 import { CHESS_GAME_USER_PICK } from "../misc/strings";
-import minimax from "../misc/minmax";
 import { Piece } from "../types/square";
 import graphics from "../graphics";
 

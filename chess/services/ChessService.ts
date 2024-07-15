@@ -1,7 +1,7 @@
 import { Chess, Color, Move, Square } from 'chess.js'
 import { CHESS_GAME_PGN_STATE, CHESS_GAME_UNDO_HISTORY } from '../misc/strings'
 import minimax from '../misc/minmax'
-const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://chess-game-eosin.vercel.app" : "http://localhost:3000"
+const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
 class ChessService {
     private chess: Chess
     undoHistory: Move[] = []

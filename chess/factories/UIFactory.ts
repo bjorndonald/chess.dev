@@ -4,8 +4,6 @@ import ChessService from "../services/ChessService"
 import { Piece } from "../types/square"
 import { addClass, fade, getChildElementIndex, removeClass, unfade } from "../misc/func"
 
-const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
-
 class UIFactory {
     service: ChessService
     currentSquare: Square | null = null
