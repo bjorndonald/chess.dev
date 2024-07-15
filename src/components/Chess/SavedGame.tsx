@@ -45,7 +45,7 @@ const SavedGame = ({ player, game }: Props) => {
     if (!whitePlayer && !blackPlayer && game.type !== GameType.Local) {
       setShowPlayerModal(true);
     }
-
+    console.log(game)
     const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
     iframe.contentWindow?.postMessage(
       {
