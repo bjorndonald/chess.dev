@@ -10,6 +10,7 @@ class UIFactory {
     service: ChessService
     currentSquare: Square | null = null
     constructor() {
+        console.log("UIFactory")
         this.service = new ChessService()
         this.setupBoard()
         this.effectTurn()

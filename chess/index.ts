@@ -11,6 +11,7 @@ const GameType = {
 }
 let factory: UIFactory
 function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: string, userPick: Color, action: string }>) {
+    console.log(e.origin, window.location.href, e.data)
      const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
  
     if (e.origin !== origin)
