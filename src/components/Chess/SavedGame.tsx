@@ -55,6 +55,10 @@ const SavedGame = ({ player, game }: Props) => {
     e: MessageEvent<{ pgnString: string; move: Move }>,
   ) => {
     console.log(e.origin, e.data);
+    console.log(
+      !process.env.NEXTAUTH_URL?.includes(e.origin) &&
+      e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
+    )
     if (
       !process.env.NEXTAUTH_URL?.includes(e.origin) &&
       e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
@@ -71,7 +75,7 @@ const SavedGame = ({ player, game }: Props) => {
     const chess = new Chess();
     chess.loadPgn(pgnString);
     chess.inCheck() &&
-    toast.success(`${chess.turn() === "w" ? "Black" : "White"} is in check`);
+      toast.success(`${chess.turn() === "w" ? "Black" : "White"} is in check`);
     chess.isCheckmate() && setCheckmate(true);
   };
 
