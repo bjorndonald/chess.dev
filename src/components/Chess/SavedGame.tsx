@@ -41,21 +41,11 @@ const SavedGame = ({ player, game }: Props) => {
 
   useEffect(() => {
     localStorage.setItem(CHESS_GAME_PGN_STATE, game?.pgnString);
-    window.addEventListener("message", handleEvent, false);
     if (!whitePlayer && !blackPlayer && game.type !== GameType.Local) {
       setShowPlayerModal(true);
     }
-    const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
-    iframe.contentWindow?.postMessage(
-      {
-        action: "launch",
-        userPick: whitePlayer === YOU.value ? "w" : "b",
-        id: game.id,
-        type: game.type,
-        pgnString: pgnString,
-      },
-      "*",
-    );
+    
+    window.addEventListener("message", handleEvent, false);
 
     return () => {
       window.removeEventListener("message", handleEvent, false);
@@ -150,6 +140,19 @@ const SavedGame = ({ player, game }: Props) => {
           <div className="relative">
             <iframe
               id="chessGame"
+              onLoad={()=> {
+                const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+                iframe.contentWindow?.postMessage(
+                  {
+                    action: "launch",
+                    userPick: whitePlayer === YOU.value ? "w" : "b",
+                    id: game.id,
+                    type: game.type,
+                    pgnString: pgnString,
+                  },
+                  "*",
+                );
+              }}
               src={process.env.NEXT_PUBLIC_CHESS_PAGE}
               className="rounded-t-lg"
               width={"386"}
