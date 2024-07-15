@@ -44,7 +44,7 @@ const SavedGame = ({ player, game }: Props) => {
     if (!whitePlayer && !blackPlayer && game.type !== GameType.Local) {
       setShowPlayerModal(true);
     }
-    
+
     window.addEventListener("message", handleEvent, false);
 
     return () => {
@@ -140,8 +140,10 @@ const SavedGame = ({ player, game }: Props) => {
           <div className="relative">
             <iframe
               id="chessGame"
-              onLoad={()=> {
-                const iframe = document.getElementById("chessGame") as HTMLIFrameElement;
+              onLoad={() => {
+                const iframe = document.getElementById(
+                  "chessGame",
+                ) as HTMLIFrameElement;
                 iframe.contentWindow?.postMessage(
                   {
                     action: "launch",
