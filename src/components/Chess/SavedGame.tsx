@@ -54,11 +54,7 @@ const SavedGame = ({ player, game }: Props) => {
   const handleEvent = async (
     e: MessageEvent<{ pgnString: string; move: Move }>,
   ) => {
-    console.log(e.origin, e.data);
-    console.log(
-      process.env.NEXTAUTH_URL?.includes(e.origin) ||
-      !process.env.NEXT_PUBLIC_CHESS_PAGE.includes(e.origin),
-    );
+    
     if (
       process.env.NEXTAUTH_URL?.includes(e.origin) ||
       !process.env.NEXT_PUBLIC_CHESS_PAGE.includes(e.origin)
