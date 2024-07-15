@@ -6,7 +6,7 @@ export default function Home() {
     <main className="relative">
       <div className="container mx-auto flex max-w-xl flex-col items-center">
         <div className="my-8">
-          <h1 className="my-8 text-center font-pistilli text-4xl font-bold md:text-5xl">
+          <h1 className="md:text-5xl my-8 text-center font-pistilli text-4xl font-bold">
             Bored? Have a quick <br />
             Game of{" "}
             <span className="bg-gradient-to-br from-blue-300 to-blue-500 bg-clip-text text-transparent">
@@ -15,7 +15,7 @@ export default function Home() {
           </h1>
         </div>
         <Chess />
-        <div className="mx-4 my-12 md:mx-0">
+        <div className="md:mx-0 mx-4 my-12">
           <h2 className="mb-8 font-queen text-2xl">How to play?</h2>
           <div className="space-y-4 font-queen">
             <p>

@@ -137,7 +137,7 @@ const SavedGame = ({ player, game }: Props) => {
     <>
       {!!checkmate && <CheckmateModal pgnString={pgnString} />}
       <div className="my-8">
-        <h1 className="my-8 text-center font-pistilli text-4xl font-bold md:text-5xl">
+        <h1 className="md:text-5xl my-8 text-center font-pistilli text-4xl font-bold">
           Here&apos;s the chess game
           <br />
           <span className="bg-gradient-to-br from-blue-300 to-blue-500 bg-clip-text text-transparent">

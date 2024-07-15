@@ -108,7 +108,7 @@ const config: Config = {
   daisyui: {
     themes: [{
       light: {
-        "primary": "#010101",
+        "primary": "#3b82f6",
         "primary-content": "#ffffff",
         "secondary": "#010101",
         "accent": "#010101",
@@ -127,7 +127,7 @@ const config: Config = {
       },
 
       dark: {
-        "primary": "#010101",
+        "primary": "#3b82f6",
         "primary-content": "#ffffff",
         "secondary": "#010101",
         "accent": "#010101",

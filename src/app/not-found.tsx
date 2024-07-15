@@ -8,7 +8,7 @@ export default function NotFound() {
     <section
       id="error"
       className={
-        "tablet-sm:-mb-8 -m-7 flex h-full w-full flex-1 flex-col items-center justify-center gap-5 py-24"
+        "-m-7 flex h-full w-full flex-1 flex-col items-center justify-center gap-5 py-24 tablet-sm:-mb-8"
       }
     >
       <h1 className={"mb-4 text-red-500"}>Woops! ~ Page not found</h1>

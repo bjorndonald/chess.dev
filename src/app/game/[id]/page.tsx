@@ -14,7 +14,7 @@ export default async function Game({ params: { id }, searchParams }: Props) {
     <main className="relative">
       <div className="container mx-auto flex max-w-xl flex-col items-center">
         <SavedGame player={player} game={game} />
-        <div className="mx-4 my-12 md:mx-0">
+        <div className="md:mx-0 mx-4 my-12">
           <h2 className="mb-8 font-queen text-2xl">How to play?</h2>
           <div className="space-y-4 font-queen">
             <p>
