@@ -141,19 +141,21 @@ const SavedGame = ({ player, game }: Props) => {
             <iframe
               id="chessGame"
               onLoad={() => {
-                const iframe = document.getElementById(
-                  "chessGame",
-                ) as HTMLIFrameElement;
-                iframe.contentWindow?.postMessage(
-                  {
-                    action: "launch",
-                    userPick: whitePlayer === YOU.value ? "w" : "b",
-                    id: game.id,
-                    type: game.type,
-                    pgnString: pgnString,
-                  },
-                  "*",
-                );
+                setTimeout(() => {
+                  const iframe = document.getElementById(
+                    "chessGame",
+                  ) as HTMLIFrameElement;
+                  iframe.contentWindow?.postMessage(
+                    {
+                      action: "launch",
+                      userPick: whitePlayer === YOU.value ? "w" : "b",
+                      id: game.id,
+                      type: game.type,
+                      pgnString: pgnString,
+                    },
+                    "*",
+                  );
+                }, 500);
               }}
               src={process.env.NEXT_PUBLIC_CHESS_PAGE}
               className="rounded-t-lg"
