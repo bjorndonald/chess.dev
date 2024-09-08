@@ -5,12 +5,10 @@ export const createGameSchema = object({
         1,
         "Game Type is required"
     ),
-    userPick: string({ required_error: "Game Type is required" }).min(
-        1,
-        "User Pick is required"
-    ),
+    owner: string({ required_error: "Email is required" }).email(),
     pgnString: string({ required_error: "PGN string is required" }),
-    opponent: string().email({ message: "Email is required" }).optional(),
+    white: string({ required_error: "White player is required" }),
+    black: string({ required_error: "Black player is required" }),
 });
 
 export const updateGameSchema = object({

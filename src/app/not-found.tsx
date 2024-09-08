@@ -11,7 +11,7 @@ export default function NotFound() {
         "-m-7 flex h-full w-full flex-1 flex-col items-center justify-center gap-5 py-24 tablet-sm:-mb-8"
       }
     >
-      <h1 className={"mb-4 text-red-500"}>Woops! ~ Page not found</h1>
+      <h1 className={"text-red-500 mb-4"}>Woops! ~ Page not found</h1>
       <p>
         Unfortunately, the page you&apos;re looking for doesn&apos;t exist or
         has been moved.

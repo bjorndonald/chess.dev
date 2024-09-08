@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+[data-theme] {
+  background-color: transparent !important;
+}
+
 @layer components {
   .hstack {
     @apply flex items-center;
@@ -33,10 +38,13 @@
 }
 
 html {
+  margin-top: auto;
   background: transparent;
 }
 
 body {
+  height: 100vh;
+  background: transparent;
   font-family: Poppins;
 }
 
@@ -52,7 +60,8 @@ body {
   transform: rotateX(90deg);
 }
 
-.piece svg {
+.piece svg,
+.promotion svg {
   width: 40px;
   height: 42px;
 }
@@ -83,7 +92,8 @@ body {
 }
 
 @media (max-width: 480px) {
-  .piece svg {
+  .piece svg,
+  .promotion svg {
     width: 30px;
     height: 31.5px;
   }
@@ -108,6 +118,16 @@ body {
   background: #c4c4c4;
 }
 
+.danger-inner {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
 .row:nth-child(even) .square:nth-child(even) .danger {
   background: #b2a7fc;
 }
@@ -126,4 +146,18 @@ body {
 
 .piece svg {
   pointer-events: none;
+}
+
+.promotion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 100;
+  background: #7b61ff;
 }

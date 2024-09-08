@@ -2,33 +2,18 @@
 import UIFactory from "./factories/UIFactory";
 import { Color } from "chess.js";
 import ComputerUIFactory from "./factories/ComputerUIFactory";
-import { CHESS_GAME_ID, CHESS_GAME_PGN_STATE, CHESS_GAME_TYPE, CHESS_GAME_UNDO_HISTORY, CHESS_GAME_USER_PICK } from "./misc/strings";
-import RemoteFactory from "./factories/RemoteFactory";
-const GameType = {
-    Local: "Local",
-    Computer: "Computer",
-    Remote: "Remote",
-}
+import { CHESS_GAME_ID, CHESS_GAME_PGN_STATE, CHESS_GAME_TYPE, CHESS_GAME_UNDO_HISTORY, CHESS_GAME_USER_PICK, devUrl, remoteUrl } from "./misc/strings";
+import axios from "axios";
+import Game from "@/types/game";
+
 let factory: UIFactory
+
+const origin = window.location.href.includes(remoteUrl) ? "https://quickchess.vercel.app" : "http://localhost:3000"
 function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: string, userPick: Color, action: string }>) {
-    
-     const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
- 
+
+
     if (e.origin !== origin)
         return;
-    if (e.data.action === "launch") {
-        
-        localStorage.setItem(CHESS_GAME_USER_PICK, e.data.userPick)
-        localStorage.setItem(CHESS_GAME_ID, e.data.id)
-        localStorage.setItem(CHESS_GAME_TYPE, e.data.type)
-        localStorage.removeItem(CHESS_GAME_UNDO_HISTORY)
-        localStorage.setItem(CHESS_GAME_PGN_STATE, e.data.pgnString)
-        if (e.data.type === GameType.Computer)
-            factory = new ComputerUIFactory()
-        if (e.data.type === GameType.Remote)
-            factory = new RemoteFactory()
-        else factory = new UIFactory()
-    }
 
     if (e.data.action === "undo") {
         factory.undo()
@@ -45,16 +30,36 @@ function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: s
     if (e.data.action === "rewind") {
         factory.rewind()
     }
- 
+
     if (e.data.action === "reset") {
-        localStorage.removeItem(CHESS_GAME_UNDO_HISTORY)
-        localStorage.removeItem(CHESS_GAME_USER_PICK)
-        localStorage.removeItem(CHESS_GAME_ID)
-        localStorage.removeItem(CHESS_GAME_TYPE)
-        localStorage.removeItem(CHESS_GAME_PGN_STATE)
+        if (!factory.remoteGame) {
+            localStorage.removeItem(CHESS_GAME_UNDO_HISTORY)
+            localStorage.removeItem(CHESS_GAME_USER_PICK)
+            localStorage.removeItem(CHESS_GAME_ID)
+            localStorage.removeItem(CHESS_GAME_TYPE)
+            localStorage.removeItem(CHESS_GAME_PGN_STATE)
+        }
+
         factory.resetBoard()
-        factory = new UIFactory()
+
     }
 }
-factory = new UIFactory()
+
+const id = window.location.href.replace(remoteUrl + "?id=", "").replace(devUrl + "?id=", "")
+
+if (id != "")
+    axios.get("http://localhost:8080/game/" + id)
+        .then(res => {
+            const game = res.data.game as Game;
+
+            if (game.type == "Local")
+                factory = new UIFactory()
+            if (game.type == "Computer")
+                factory = new ComputerUIFactory(game)
+        })
+else {
+    factory = new UIFactory()
+}
+
+
 window.addEventListener('message', receiveMessage);

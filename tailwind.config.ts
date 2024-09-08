@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 import { fontFamily, spacing } from 'tailwindcss/defaultTheme';
+import twColors from 'tailwindcss/colors';
 
 const sansFontFamily = ['var(--font-inter)', 'Inter', ...fontFamily.sans];
 const breakpoints = {
@@ -19,21 +20,15 @@ const config: Config = {
   ],
   theme: {
     screens: breakpoints,
+    colors: {
+      black: twColors.black,
+      white: twColors.white,
+      blue: twColors.blue,
+      board: "#F4F7FA",
+      dark: "#B7C0D8",
+      light: "#E8EDF9",
+    },
     extend: {
-      colors: {
-        board: "#F4F7FA",
-        chessdark: "#B7C0D8",
-        chesslight: "#E8EDF9",
-        dark: "#1e1e1e",
-        primary: "#010101",
-        secondary: "#131313",
-        tertiary: "#222222",
-        accent: "#f3f3f3",
-        current: "#ffff"
-      },
-      boxShadow: {
-        commandButton: "0 0 0 3px hsl(0 0% 30%)"
-      },
       fontFamily: {
         sans: [
           sansFontFamily,
@@ -57,64 +52,20 @@ const config: Config = {
         ],
         mono: ['monospace', ...fontFamily.mono],
       },
-      typography: theme => ({
-        DEFAULT: {
-          css: {
-            color: theme("colors.gray.300"),
-            "h1, h2, h3, h4, h5, h6": {
-              color: theme("colors.gray.100"),
-              strong: theme("colors.gray.100"),
-              fontWeight: theme("fontWeight.bold"),
-            },
-            h1: {
-              fontSize: theme("fontSize.3xl"),
-              marginTop: theme("spacing.8"),
-              marginBottom: theme("spacing.8")
-            },
-            h2: {
-              fontSize: theme("fontSize.2xl"),
-              marginTop: theme("spacing.8"),
-              marginBottom: theme("spacing.8")
-            },
-            h3: {
-              fontSize: theme("fontSize.xl"),
-              marginTop: theme("spacing.6"),
-              marginBottom: theme("spacing.6")
-            },
-            h4: {
-              fontSize: theme("fontSize.lg"),
-              marginTop: theme("spacing.6"),
-              marginBottom: theme("spacing.6")
-            },
-            h5: {
-              fontSize: theme("fontSize.lg"),
-              marginTop: theme("spacing.4"),
-              marginBottom: theme("spacing.4")
-            },
-            h6: {
-              fontSize: theme("fontSize.lg"),
-              marginTop: theme("spacing.4"),
-              marginBottom: theme("spacing.4")
-            },
-            "--tw-prose-code": theme("colors.red[300]"),
-            "--tw-prose-bold": theme("colors.accent"),
-            "--tw-prose-quotes": theme("colors.accent")
-          }
-        }
-      })
+
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [require("daisyui")],
   daisyui: {
     themes: [{
       light: {
         "primary": "#3b82f6",
         "primary-content": "#ffffff",
         "secondary": "#010101",
-        "accent": "#010101",
-        "base-100": "#000000",
-        "base-200": "#010101",
-        "base-300": "#202020",
+        "accent": "#202020",
+        "base-100": "#00000000",
+        "base-200": "#202020",
+        "base-300": "#898989",
         "base-content": "#fff",
         "neutral": "#0000",
         "neutral-content": "#fff",
@@ -130,10 +81,10 @@ const config: Config = {
         "primary": "#3b82f6",
         "primary-content": "#ffffff",
         "secondary": "#010101",
-        "accent": "#010101",
-        "base-100": "#000000",
-        "base-200": "#010101",
-        "base-300": "#202020",
+        "accent": "#202020",
+        "base-100": "#00000000",
+        "base-200": "#202020",
+        "base-300": "#898989",
         "base-content": "#fff",
         "neutral": "#0000",
         "neutral-content": "#fff",

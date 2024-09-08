@@ -1,9 +1,10 @@
 export default interface Game {
-    id: string
+    id?: string
     type: string
-    pgnString: string
-    white: string
-    black: string
+    pgnstring: string
+    undohistory: string
+    white?: string
+    black?: string
     created_at: string
     updated_at: string
 }

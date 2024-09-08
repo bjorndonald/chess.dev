@@ -7,7 +7,7 @@ const ErrorComponent = () => {
       id="error"
       className="flex min-h-screen flex-col items-center justify-center gap-5 py-[65px]"
     >
-      <h1 className={"mb-3 text-3xl text-red-500"}>Something went wrong</h1>
+      <h1 className={"text-red-500 mb-3 text-3xl"}>Something went wrong</h1>
       <p>
         <span className="font-medium">Whoops!</span> Unfortunately an unexpected
         error occured.

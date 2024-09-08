@@ -1,32 +1,40 @@
 import { Chess, Color, Move, Square } from 'chess.js'
 import { CHESS_GAME_PGN_STATE, CHESS_GAME_UNDO_HISTORY } from '../misc/strings'
 import minimax from '../misc/minmax'
+import Game from '@/types/game'
+import axios from 'axios'
 const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
 class ChessService {
     private chess: Chess
+    remoteGame?: Game
     undoHistory: Move[] = []
-    constructor() {
-        const pgnString = localStorage.getItem(CHESS_GAME_PGN_STATE)
+    constructor(game?: Game) {
+        this.remoteGame = game
+        const pgnString = !!game ? game.pgnstring : localStorage.getItem(CHESS_GAME_PGN_STATE)
+
         const chess = new Chess()
-        if(!!pgnString)
-        chess.loadPgn(pgnString)
+        if (!!pgnString)
+            chess.loadPgn(pgnString)
         this.chess = chess
-        const undoHistory = localStorage.getItem(CHESS_GAME_UNDO_HISTORY)
-        if(!!undoHistory){
+        const undoHistory = !!game ? game?.undohistory : localStorage.getItem(CHESS_GAME_UNDO_HISTORY)
+        if (!!undoHistory) {
             try {
                 this.undoHistory = JSON.parse(undoHistory)
             } catch (error) {
                 this.undoHistory = []
             }
         }
+
     }
 
-    saveToStore() { 
-        localStorage.setItem(CHESS_GAME_PGN_STATE, this.chess.pgn())
-        localStorage.setItem(CHESS_GAME_UNDO_HISTORY, JSON.stringify(this.undoHistory))
+    saveToStore() {
+        if (!this.remoteGame) {
+            localStorage.setItem(CHESS_GAME_PGN_STATE, this.chess.pgn())
+            localStorage.setItem(CHESS_GAME_UNDO_HISTORY, JSON.stringify(this.undoHistory))
+        }
     }
 
-    computerMove = (col: Color) => {
+    computerMove = (col: Color | "") => {
         const [move] = minimax(this.chess, 1, 4, 5, true, 0, col === "w" ? "b" : "w")
         return move
     }
@@ -41,12 +49,12 @@ class ChessService {
 
     redo() {
         const move = this.undoHistory.pop()
-        if(!!move){
+        if (!!move) {
             this.chess.move(move)
             window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
         }
         this.saveToStore()
-        return move 
+        return move
     }
 
     inCheck() {
@@ -54,7 +62,6 @@ class ChessService {
     }
 
     inCheckmate() {
-        
         return this.chess.isCheckmate()
     }
 
@@ -66,12 +73,34 @@ class ChessService {
         return move
     }
 
-    movePiece(move: { from: Square, to: Square }) {
-       const result = this.chess.move(move)
-        window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
-        this.undoHistory = []
-        this.saveToStore()
-        return result
+    movePiece(move: { from: Square, to: Square, promotion?: string } | string) {
+        try {
+            const result = this.chess.move(move)
+
+            window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
+            this.undoHistory = []
+
+            this.saveToStore()
+            if (!!this.remoteGame) {
+                axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+                    action: "move",
+                    move: result
+                })
+            }
+            if (this.chess.isCheckmate()) {
+                axios.post("http://localhost:8080/game/winner/" + this.remoteGame.id, {
+                    winner: this.chess.turn() === "w" ? "b" : "w"
+                })
+            }
+            if (this.chess.isStalemate()) {
+                axios.post("http://localhost:8080/game/winner/" + this.remoteGame.id, {
+                    winner: "draw"
+                })
+            }
+            return result
+        } catch (error) {
+            return null
+        }
     }
 
     isGameOn() {
@@ -80,6 +109,10 @@ class ChessService {
 
     getTurn() {
         return this.chess.turn()
+    }
+
+    isDraw() {
+        return this.chess.isDraw()
     }
 
     getPieces() {

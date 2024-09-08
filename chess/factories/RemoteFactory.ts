@@ -13,7 +13,7 @@ class RemoteFactory extends UIFactory {
         const pick = localStorage.getItem(CHESS_GAME_USER_PICK)
         if (!pick) return
         const t = this
-        this.userPick = pick as Color
+        this.userPick = pick as Color 
         this.effectPick()
 
         $(window).focus(function () { t.windowActive = true; });

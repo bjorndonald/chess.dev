@@ -3,10 +3,9 @@ import { games } from "@/database/schema";
 import { ZodError } from "zod";
 import { createGameSchema } from "@/lib/game-schema";
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import CodeTemplate from "@/emails/CodeTemplate";
+import { eq } from "drizzle-orm";
+import Game from "@/types/game";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 type NewGame = typeof games.$inferInsert;
 const insertGame = async (game: NewGame) => {
   const result = await db.insert(games).values(game).returning();
@@ -15,43 +14,42 @@ const insertGame = async (game: NewGame) => {
 
 export async function POST(req: Request) {
   try {
-    const { pgnString, type, userPick, opponent } = createGameSchema.parse(
+    const { pgnString, owner, type, white, black } = createGameSchema.parse(
       await req.json(),
     );
 
-    const white = Math.floor(100000 + Math.random() * 900000);
-    const black = Math.floor(100000 + Math.random() * 900000);
+    const gameList = await db
+      .select()
+      .from(games)
+      .where(eq(games.owner, owner));
 
+    if (gameList.length > 5) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: "You have alrady saved 5 games",
+        },
+        { status: 401 },
+      );
+    }
     const game = await insertGame({
       black,
       pgnString,
+      owner,
       type,
       white,
       created_at: new Date(),
       updated_at: new Date(),
     });
-    if (game.type === "Remote") {
-      await resend.emails.send({
-        from: "Quick Chess <info@tuniko.info>",
-        to: [`${opponent}`],
-        subject: "New Chess Game",
-        text: "",
-        headers: {
-          "X-Entity-Ref-ID": "123456789",
-        },
-        react: CodeTemplate({
-          link: `${process.env.NEXTAUTH_URL}/game/${game.id}?player=${userPick === "w" ? black : white}`,
-        }),
-      });
-    }
 
     return NextResponse.json({
       game: {
         id: game.id,
         type: game.type,
-        pgnString: game.pgnString,
-        ...(userPick === "w" ? { white: game.white } : {}),
-        ...(userPick === "b" ? { black: game.black } : {}),
+        owner: game.owner,
+        pgnString: game.pgnstring,
+        white: game.white,
+        black: game.black,
         created_at: game.created_at,
         updated_at: game.updated_at,
       },
