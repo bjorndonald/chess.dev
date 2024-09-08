@@ -9,7 +9,7 @@ import { Chess } from "chess.js";
 import Moves from "./Moves";
 import Countdown from "./Countdown";
 import { CHESS_GAME_PGN_STATE } from "@/constants/strings";
-import { createGame, updateGame } from "@/actions/game";
+import { createGame } from "@/actions/game";
 import Game from "@/types/game";
 import useGame from "@/store/game";
 import toast from "react-hot-toast";
