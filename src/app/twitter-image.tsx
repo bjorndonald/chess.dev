@@ -1,4 +1,5 @@
-import Logo from "@/components/Common/Logo";
+
+import Logo from "@/components/atoms/logo";
 import { ImageResponse } from "next/og";
 
 // Route segment config
