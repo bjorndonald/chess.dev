@@ -1,1 +1,0 @@
-ALTER TABLE "games" RENAME COLUMN "pgnString" TO "pgnstring";

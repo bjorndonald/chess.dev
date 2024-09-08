@@ -1,5 +1,5 @@
 {
-  "id": "858f0a11-0622-40b9-bd37-b92399a89423",
+  "id": "0ae5f491-7b43-468b-8314-292a5539e5c1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -118,11 +118,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "pgnString": {
-          "name": "pgnString",
+        "owner": {
+          "name": "owner",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "winner": {
+          "name": "winner",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
+        },
+        "pgnstring": {
+          "name": "pgnstring",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
         },
         "white": {
           "name": "white",
@@ -135,6 +149,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "undohistory": {
+          "name": "undohistory",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'"
         },
         "created_at": {
           "name": "created_at",

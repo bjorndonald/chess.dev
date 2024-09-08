@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1723886820169,
-      "tag": "0000_big_darkhawk",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1723897873362,
-      "tag": "0001_abnormal_cassandra_nova",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1723901016785,
-      "tag": "0002_thankful_silver_sable",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1724065577857,
-      "tag": "0003_many_marvex",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1724082452872,
-      "tag": "0004_flowery_sinister_six",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1724426439189,
-      "tag": "0005_special_lorna_dane",
+      "when": 1725799024255,
+      "tag": "0000_low_moon_knight",
       "breakpoints": true
     }
   ]

@@ -1,1 +1,0 @@
-ALTER TABLE "games" ALTER COLUMN "pgnstring" SET DEFAULT '';

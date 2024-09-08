@@ -16,9 +16,12 @@ CREATE TABLE IF NOT EXISTS "account" (
 CREATE TABLE IF NOT EXISTS "games" (
 	"id" text PRIMARY KEY NOT NULL,
 	"type" text,
-	"pgnString" text,
+	"owner" text,
+	"winner" text DEFAULT '',
+	"pgnstring" text DEFAULT '',
 	"white" text,
 	"black" text,
+	"undohistory" text DEFAULT '[]',
 	"created_at" timestamp,
 	"updated_at" timestamp
 );
