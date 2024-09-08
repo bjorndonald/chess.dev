@@ -37,7 +37,7 @@ const Track = ({ pgnString, game }: Props) => {
   }
   return (
     <h1 className="md:text-4xl mb-4 mt-8 text-center font-pistilli text-3xl font-bold">
-      It's {chess.turn() === "w" ? "White" : "Black"}'s turn{" "}
+      It&apos;s {chess.turn() === "w" ? "White" : "Black"}&apos;s turn{" "}
       {chess.turn() === "b" ? "♙" : "♟"}
     </h1>
   );

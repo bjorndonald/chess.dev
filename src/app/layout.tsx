@@ -1,7 +1,6 @@
 import "@/styles/global.scss";
 import cx from "classnames";
 import { Inter } from "next/font/google";
-import NextTopLoader from "nextjs-toploader";
 import { ManHandle, Pistilli, Queen } from "@/media/font";
 import { Toaster } from "react-hot-toast";
 import { createMetadata } from "@/utils/metadata";

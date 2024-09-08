@@ -6,9 +6,9 @@ const DrawModal = ({ pgnString }: { pgnString: string }) => {
   const chess = new Chess();
   chess.loadPgn(pgnString);
   return (
-    <Modal show onClose={() => {}}>
+    <Modal show onClose={() => { }}>
       <div className="flex items-center justify-center">
-        <p className="text-xl font-bold">It's a draw</p>
+        <p className="text-xl font-bold">It&apos;s a draw</p>
       </div>
 
       <div className="my-4">

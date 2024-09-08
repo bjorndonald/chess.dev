@@ -4,7 +4,6 @@ import { ZodError } from "zod";
 import { createGameSchema } from "@/lib/game-schema";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import Game from "@/types/game";
 
 type NewGame = typeof games.$inferInsert;
 const insertGame = async (game: NewGame) => {

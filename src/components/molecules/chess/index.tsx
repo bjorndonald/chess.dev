@@ -8,7 +8,7 @@ import { Menu } from "react-feather";
 import { Chess } from "chess.js";
 import Moves from "./Moves";
 import Countdown from "./Countdown";
-import { CHESS_GAME_ID, CHESS_GAME_PGN_STATE } from "@/constants/strings";
+import { CHESS_GAME_PGN_STATE } from "@/constants/strings";
 import { createGame, updateGame } from "@/actions/game";
 import Game from "@/types/game";
 import useGame from "@/store/game";
@@ -38,7 +38,7 @@ const ChessGame = ({ initialGame }: { initialGame: Game }) => {
   const [checkmate, setCheckmate] = useState(false);
   const [showMoves, setShowMoves] = useState(false);
   const [pgnString, setPgnString] = useState(initialGame.pgnstring);
-  const [gameStart, setGameStart] = useState(false);
+
   const shareModal = useGame(s => s.shareModal);
   const [game, setGame] = useState<Game>(initialGame);
   const [showCountdown, setShowCountdown] = useState(false);
@@ -79,9 +79,6 @@ const ChessGame = ({ initialGame }: { initialGame: Game }) => {
   };
 
   const saveGame = async () => {
-    const game = await updateGame({
-      pgnstring: pgnString,
-    } as unknown as Game);
   };
 
   const resetGame = () => {

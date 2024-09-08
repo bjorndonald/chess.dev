@@ -1,6 +1,5 @@
 import { getGames } from "@/actions/game";
 import { auth } from "@/auth";
-import { closeMenu } from "@/utils/func";
 import Link from "next/link";
 import React from "react";
 import GameComponent from "./Game";

@@ -1,7 +1,5 @@
 import React from "react";
 import Speaker from "./Speaker";
-import Image from "next/image";
-import Link from "next/link";
 import SiteLogo from "./SiteLogo";
 import { auth } from "@/auth";
 import ProfileMenu from "./ProfileMenu";

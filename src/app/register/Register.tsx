@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Linkedin, Mail } from "react-feather";
+import { Mail } from "react-feather";
 import { signIn } from "next-auth/react";
 import RegisterForm from "./RegisterForm";
 import GoogleIcon from "@/components/icons/Google.icon";

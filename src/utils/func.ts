@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import $ from "jquery"
 
 export const closeMenu = () => {
     $(".dropdown").removeClass("dropdown-open");

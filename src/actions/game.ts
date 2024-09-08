@@ -1,7 +1,5 @@
 import Game from "@/types/game";
 import axios from "axios";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 
 export const createGame = async (game: Game, white: string, black: string,) => {

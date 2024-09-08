@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Linkedin } from "react-feather";
+import { ArrowRight, Eye, EyeOff } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -148,7 +148,7 @@ const SigninForm = () => {
         </div>
       </form>
       <div className="mt-6 text-center text-xs font-normal opacity-75">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <a className="link" href="/register">
           Register here
         </a>
