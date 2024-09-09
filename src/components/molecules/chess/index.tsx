@@ -20,16 +20,14 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Track from "./Track";
 import { AxiosError } from "axios";
+import { Claude3Dot5Sonnet, GPT3Dot5Turbo, GPT4oMini, STOCKFISH, YOU } from "./strings";
 
 const GameType = {
   Local: "Local",
   Computer: "Computer",
 };
 
-const YOU = { value: "You" };
-const GPT3Dot5Turbo = { value: "GPT 3.5 Turbo" };
-const GPT4oMini = { value: "GPT 4o Mini" };
-const STOCKFISH = { value: "StockFish" };
+
 const playerList = [YOU, GPT3Dot5Turbo, GPT4oMini, STOCKFISH];
 
 const ChessGame = ({ initialGame }: { initialGame: Game }) => {

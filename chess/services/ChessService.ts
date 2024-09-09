@@ -82,18 +82,18 @@ class ChessService {
 
             this.saveToStore()
             if (!!this.remoteGame) {
-                axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+                axios.post("https://myonlineservices.alwaysdata.net/game/" + this.remoteGame.id, {
                     action: "move",
                     move: result
                 })
             }
             if (this.chess.isCheckmate()) {
-                axios.post("http://localhost:8080/game/winner/" + this.remoteGame.id, {
+                axios.post("https://myonlineservices.alwaysdata.net/game/winner/" + this.remoteGame.id, {
                     winner: this.chess.turn() === "w" ? "b" : "w"
                 })
             }
             if (this.chess.isStalemate()) {
-                axios.post("http://localhost:8080/game/winner/" + this.remoteGame.id, {
+                axios.post("https://myonlineservices.alwaysdata.net/game/winner/" + this.remoteGame.id, {
                     winner: "draw"
                 })
             }

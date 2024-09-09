@@ -6,7 +6,7 @@ import graphics from "../graphics";
 import Game from "@/types/game";
 import axios from "axios";
 import $ from 'jquery'
-const backendUrl = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://myonlineservices.alwaysdata.net" : "http://localhost:8080"
+const backendUrl = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://myonlineservices.alwaysdata.net" : "https://myonlineservices.alwaysdata.net"
 class ComputerUIFactory extends UIFactory {
     userPick: Color | ""
 
@@ -25,7 +25,7 @@ class ComputerUIFactory extends UIFactory {
         $(window).blur(function () { t.windowActive = false; });
 
         if (!!this.remoteGame.id && ((this.remoteGame.white != "you" && this.service.getTurn() === "w") || (this.remoteGame.black != "you" && this.service.getTurn() === "b"))) {
-            axios.post("http://localhost:8080/game/computer/" + this.remoteGame.id, { from: "", to: "" })
+            axios.post("https://myonlineservices.alwaysdata.net/game/computer/" + this.remoteGame.id, { from: "", to: "" })
         }
 
         if (!!window.EventSource) {
@@ -64,7 +64,7 @@ class ComputerUIFactory extends UIFactory {
     }) => {
         const move = this.service.movePiece(moveInfo)
         if (!move) {
-            axios.post("http://localhost:8080/game/computer/" + this.remoteGame.id, moveInfo)
+            axios.post("https://myonlineservices.alwaysdata.net/game/computer/" + this.remoteGame.id, moveInfo)
             return
         }
         const to = document.getElementById(move.to)
@@ -101,7 +101,7 @@ class ComputerUIFactory extends UIFactory {
         await this.effectTurn()
         await unfade(board!)
         if (!!this.remoteGame) {
-            axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+            axios.post("https://myonlineservices.alwaysdata.net/game/" + this.remoteGame.id, {
                 action: "rewind",
             })
         }
@@ -116,7 +116,7 @@ class ComputerUIFactory extends UIFactory {
         await this.effectTurn()
         await unfade(board!)
         if (!!this.remoteGame) {
-            axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+            axios.post("https://myonlineservices.alwaysdata.net/game/" + this.remoteGame.id, {
                 action: "fastforward",
             })
         }
@@ -130,7 +130,7 @@ class ComputerUIFactory extends UIFactory {
         await this.effectTurn()
         await unfade(board!)
         if (!!this.remoteGame) {
-            axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+            axios.post("https://myonlineservices.alwaysdata.net/game/" + this.remoteGame.id, {
                 action: "undo",
             })
         }
@@ -144,7 +144,7 @@ class ComputerUIFactory extends UIFactory {
         await this.effectTurn()
         await unfade(board!)
         if (!!this.remoteGame) {
-            axios.post("http://localhost:8080/game/" + this.remoteGame.id, {
+            axios.post("https://myonlineservices.alwaysdata.net/game/" + this.remoteGame.id, {
                 action: "redo",
             })
         }

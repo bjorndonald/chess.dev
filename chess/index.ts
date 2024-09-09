@@ -48,7 +48,7 @@ function receiveMessage(e: MessageEvent<{ type: string, id: string, pgnString: s
 const id = window.location.href.replace(remoteUrl + "?id=", "").replace(devUrl + "?id=", "")
 
 if (id != "")
-    axios.get("http://localhost:8080/game/" + id)
+    axios.get("https://myonlineservices.alwaysdata.net/game/" + id)
         .then(res => {
             const game = res.data.game as Game;
 
@@ -60,6 +60,5 @@ if (id != "")
 else {
     factory = new UIFactory()
 }
-
 
 window.addEventListener('message', receiveMessage);
