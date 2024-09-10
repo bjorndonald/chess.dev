@@ -110,7 +110,7 @@ const ChessGame = ({ initialGame }: { initialGame: Game }) => {
   }, []);
 
   const handleEvent = (e: MessageEvent<{ pgnString: string }>) => {
-    console.log(e.origin)
+    console.log(e.origin, pgnString)
     if (
       !process.env.NEXTAUTH_URL?.includes(e.origin) &&
       e.origin !== process.env.NEXT_PUBLIC_CHESS_PAGE
