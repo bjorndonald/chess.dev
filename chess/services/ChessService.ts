@@ -76,7 +76,7 @@ class ChessService {
     movePiece(move: { from: Square, to: Square, promotion?: string } | string) {
         try {
             const result = this.chess.move(move)
-
+            console.log(origin)
             window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
             this.undoHistory = []
 
