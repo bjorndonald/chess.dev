@@ -11,7 +11,7 @@ const Moves = ({ pgnString }: Props) => {
   const moves = chess.history();
   console.log(pgnString);
   return (
-    <div className="absolute left-0 top-0 z-10 h-full w-full overflow-auto bg-[#262421]/70 pt-4">
+    <div className="absolute left-0 bottom-0 z-10 h-[408px] w-full overflow-auto bg-[#262421]/70 pt-4">
       <h1 className="text-center font-pistilli text-4xl">Moves</h1>
       <div id="moves" className="vstack w-full">
         {moves
