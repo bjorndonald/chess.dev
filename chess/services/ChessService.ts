@@ -3,7 +3,7 @@ import { CHESS_GAME_PGN_STATE, CHESS_GAME_UNDO_HISTORY } from '../misc/strings'
 import minimax from '../misc/minmax'
 import Game from '@/types/game'
 import axios from 'axios'
-const origin = window.location.href === "https://myonlineservices.alwaysdata.net/chess/" ? "https://quickchess.vercel.app" : "http://localhost:3000"
+const origin = window.location.href.includes("https://myonlineservices.alwaysdata.net/chess/") ? "https://quickchess.vercel.app" : "http://localhost:3000"
 class ChessService {
     private chess: Chess
     remoteGame?: Game
@@ -76,7 +76,7 @@ class ChessService {
     movePiece(move: { from: Square, to: Square, promotion?: string } | string) {
         try {
             const result = this.chess.move(move)
-            console.log(origin)
+
             window.parent.postMessage({ pgnString: this.chess.pgn(), move: move }, origin)
             this.undoHistory = []
 
