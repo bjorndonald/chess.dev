@@ -20,7 +20,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Track from "./Track";
 import { AxiosError } from "axios";
-import { Claude3Dot5Sonnet, GPT3Dot5Turbo, GPT4oMini, STOCKFISH, YOU } from "./strings";
+import { GPT3Dot5Turbo, GPT4oMini, STOCKFISH, YOU } from "./strings";
 
 const GameType = {
   Local: "Local",
