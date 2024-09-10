@@ -34,7 +34,7 @@ export default function RootLayout({
           Queen.variable,
         )}
       >
-        <div className="relative min-h-screen overflow-x-hidden">
+        <div className="relative pt-16 min-h-screen overflow-x-hidden">
           <Header />
           <Toaster />
           <div className="container mx-auto flex max-w-xl flex-col items-center">

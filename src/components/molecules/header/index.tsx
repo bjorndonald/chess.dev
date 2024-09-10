@@ -7,7 +7,7 @@ import ProfileMenu from "./ProfileMenu";
 const Header = async () => {
   const session = await auth();
   return (
-    <nav className="navbar relative z-10 justify-center bg-base-200">
+    <nav className="navbar absolute top-0 w-screen h-fit z-10 justify-center bg-base-200">
       <div className="navbar-start">
         <Speaker />
       </div>
